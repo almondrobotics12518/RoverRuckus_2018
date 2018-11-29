@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 @TeleOp(name="MecanumTeleOp",group="mecanum")
-public class MecanumV3 extends OpMode {
+public class MecanumTeleOp extends OpMode {
 
     private DcMotor lScrew;
     private DcMotor leftFront;
