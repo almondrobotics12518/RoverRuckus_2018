@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.sun.source.tree.BreakTree;
 
 @TeleOp(name="MecanumTeleOp",group="mecanum")
 public class MecanumTeleOp extends OpMode {
@@ -16,6 +17,8 @@ public class MecanumTeleOp extends OpMode {
     private DcMotor rightFront;
     private DcMotor leftBack;
     private DcMotor rightBack;
+    private DcMotor slide;
+    private DcMotor arm;
     private float leftX;
     private float leftY;
     private float rightX;
@@ -24,7 +27,7 @@ public class MecanumTeleOp extends OpMode {
     private double RF;
     private double LB;
     private double RB;
-    private DcMotor intake;
+   ;
 
     @Override
     public void init(){
@@ -54,12 +57,15 @@ public class MecanumTeleOp extends OpMode {
         rightFront = hardwareMap.dcMotor.get("RightFront");
         rightBack = hardwareMap.dcMotor.get("RightBack");
         lScrew = hardwareMap.dcMotor.get("LScrew");
-        intake = hardwareMap.dcMotor.get("Intake");
+        slide = hardwareMap.dcMotor.get("Slide");
+        arm = hardwareMap.dcMotor.get("Arm");
+
         // Reversing direction of right side motors
         //leftBack.setDirection(DcMotorSimple.Direction.FORWARD);
         rightBack.setDirection(DcMotorSimple.Direction.REVERSE);
         rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
         //rightFront.setDirection(DcMotorSimple.Direction.FORWARD);
+        arm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
 
         /*leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -86,8 +92,9 @@ public class MecanumTeleOp extends OpMode {
         leftBack.setPower(LB); // Gives power to LB wheels
         rightFront.setPower(RF); // Gives power to RF wheels
         rightBack.setPower(RB); // Gives power to RB wheels
-        intake.setPower(gamepad1.right_stick_y);
-        lScrew.setPower(gamepad1.right_trigger-gamepad1.left_trigger);
+        lScrew.setPower(gamepad1.right_trigger-gamepad1.left_trigger); // Gives power to the lScrew
+        arm.setPower(-gamepad2.right_stick_y * 0.50); // Gives power to the arm
+        slide.setPower(-gamepad2.left_stick_y); // Gives power to the slide
         // Add telemetry variables and updating them
         telemetry.addData("FrontLeftPower",LF);
         telemetry.addData("FrontRightPower",RF);
@@ -100,6 +107,7 @@ public class MecanumTeleOp extends OpMode {
         telemetry.addData("RightFront",rightFront.getCurrentPosition());
         telemetry.addData("RightBack",rightBack.getCurrentPosition());
         telemetry.addData("Hang",lScrew.getCurrentPosition());
+        telemetry.addData("Arm zeroPowerBehavior",arm.getZeroPowerBehavior());
         telemetry.update();
 
 
