@@ -34,7 +34,6 @@ public class MecanumTeleOp extends OpMode {
     @Override
     public void init(){
 
-
         // Set up detector
         detector = new GoldAlignDetector(); // Create detector
         detector.init(hardwareMap.appContext, CameraViewDisplay.getInstance()); // Initialize it with the app context and camera
