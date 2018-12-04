@@ -99,6 +99,7 @@ android {
 
 repositories {
     flatDir {
+        google()
         dirs rootProject.file('libs')
     }
 }

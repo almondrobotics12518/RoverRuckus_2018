@@ -24,7 +24,6 @@ public class AutoDepotSide extends LinearOpMode
     private DcMotor rightFront;
     private DcMotor rightBack;
     private DcMotor lScrew;
-    private DcMotor intake;
     BNO055IMU imu;
     private Servo teamMarker;
     private GoldAlignDetector detector;
@@ -81,7 +80,6 @@ public class AutoDepotSide extends LinearOpMode
         rightFront = hardwareMap.dcMotor.get("RightFront");
         rightBack = hardwareMap.dcMotor.get("RightBack");
         lScrew = hardwareMap.dcMotor.get("LScrew");
-        intake = hardwareMap.dcMotor.get("Intake");
 
         leftBack.setDirection(DcMotorSimple.Direction.REVERSE);
         leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -92,15 +90,17 @@ public class AutoDepotSide extends LinearOpMode
         rightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         lScrew.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        lScrew.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        teamMarker.setPosition(1);
+
         waitForStart();
 
         //Everything after the waitForStart() call is in the start portion of the program.
         //This will run when the user presses the start button.
-        /*lScrew.setPower(-1);
-        sleep(10000);
+        lScrew.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        lScrew.setPower(-1);
+        sleep(8000);
         lScrew.setPower(0);
-        */
+
         encoderDrive(-500,-500,-500,-500);
         encoderDrive(500, -500, -500, 500);
         encoderDrive(500,500,500,500);
@@ -129,7 +129,6 @@ public class AutoDepotSide extends LinearOpMode
         encoderDrive(4000,-4000,-4000,4000);
         teamMarker.setPosition(0);
         encoderDrive(500,500,-500,-500);
-
 
 
 
@@ -172,15 +171,10 @@ public class AutoDepotSide extends LinearOpMode
             telemetry.addData("Left Back Encoder:",leftBack.getCurrentPosition());
             telemetry.addData("Right Front Encoder:",rightFront.getCurrentPosition());
             telemetry.addData("Right Back Encoder:",rightBack.getCurrentPosition());
+            telemetry.addData("Hang", lScrew.getCurrentPosition());
             telemetry.addData("isFound",detector.isFound());
             telemetry.update();
         }
-
-        leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        leftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        rightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
         leftFront.setPower(0);
         rightFront.setPower(0);
         leftBack.setPower(0);
