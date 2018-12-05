@@ -35,22 +35,6 @@ public class AutoCraterSide extends LinearOpMode
 
     {
 
-        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-
-        parameters.mode = BNO055IMU.SensorMode.IMU;
-        parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
-        parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
-        parameters.loggingEnabled = false;
-
-        imu = hardwareMap.get(BNO055IMU.class, "imu");
-        imu.initialize(parameters);
-
-        while (!isStopRequested() && !imu.isGyroCalibrated())
-        {
-            sleep(50);
-            idle();
-        }
-
         // Set up detector
         detector = new GoldAlignDetector(); // Create detector
         detector.init(hardwareMap.appContext, CameraViewDisplay.getInstance()); // Initialize it with the app context and camera
@@ -96,8 +80,8 @@ public class AutoCraterSide extends LinearOpMode
         //This will run when the user presses the start button.
 
         int tarPos0 = 2000;//determines how far the robot goes to sample the minerals
-        int tarPos1 = 800;//amount of encoder values in order to move cube
-        int tarPos2 = 3000;
+        int tarPos1 = 1400;//amount of encoder values in order to move cube
+        int tarPos2 = 5000; // amount it moves between the minerals
         int yeet = 0;
         /*lScrew.setPower(-1);
         sleep(10000);
@@ -108,39 +92,43 @@ public class AutoCraterSide extends LinearOpMode
         encoderDrive(500, -500, -500, 500);
         encoderDrive(500,500,500,500);*/
         power = 0.5;
+        telemetry.addData("Status","Moving to mineral");
+        telemetry.update();
         encoderDrive(500,-500,-500,500);
 
         encoderDrive(tarPos0,-tarPos0,-tarPos0,tarPos0);
+
         if (detector.isFound()){ // If in Middle
+            telemetry.addData("Status","Moving mineral");
+            telemetry.update();
             encoderDrive(tarPos1,-tarPos1,-tarPos1,tarPos1);
-            encoderDrive(-tarPos1,tarPos1,tarPos1,-tarPos1);
+            encoderDrive(-tarPos1-300,tarPos1+300,tarPos1+300,-tarPos1-300);
         } else {
             encoderDrive(-2000,-2000,-2000,-2000);
             if (detector.isFound()){ // If on Intake side
                 yeet = 2000;
                 encoderDrive(tarPos1,-tarPos1,-tarPos1,tarPos1);
-                encoderDrive(-tarPos1,tarPos1,tarPos1,-tarPos1);
+                encoderDrive(-tarPos1-300,tarPos1+300,tarPos1+300,-tarPos1-300);
 
             } else { // If on Outake side
                 yeet = -2000;
                 encoderDrive(4000,4000,4000,4000);
                 encoderDrive(tarPos1,-tarPos1,-tarPos1,tarPos1);
-                encoderDrive(-tarPos1,tarPos1,tarPos1,-tarPos1);
+                encoderDrive(-tarPos1-300,tarPos1+300,tarPos1+300,-tarPos1-300);
             }
         }
         power = 0.7;
         encoderDrive(yeet+tarPos2,yeet+tarPos2,yeet+tarPos2,yeet+tarPos2);
         power = 0.3;
-        encoderDrive(500,500,-500,-500);
+        encoderDrive(-4700,-4700,4700,4700);
         power = 0.7;
         encoderDrive(-5000,5000,5000,-5000);
-
-
 
         while(opModeIsActive()){
 
         }
-
+        telemetry.addData("Status","stop");
+        telemetry.update();
         detector.disable();
 
 
@@ -179,6 +167,11 @@ public class AutoCraterSide extends LinearOpMode
             telemetry.addData("isFound",detector.isFound());
             telemetry.update();
         }
+
+        leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         leftFront.setPower(0);
         rightFront.setPower(0);

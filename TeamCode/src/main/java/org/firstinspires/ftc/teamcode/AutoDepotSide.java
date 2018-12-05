@@ -15,7 +15,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
-@Autonomous(name="DepotSide0",group="AutoDepotSide")
+@Autonomous
+
 public class AutoDepotSide extends LinearOpMode
 {
 
@@ -24,9 +25,11 @@ public class AutoDepotSide extends LinearOpMode
     private DcMotor rightFront;
     private DcMotor rightBack;
     private DcMotor lScrew;
+    private DcMotor intake;
     BNO055IMU imu;
     private Servo teamMarker;
     private GoldAlignDetector detector;
+    private String MineralLocation;
 
     private double power;
 
@@ -35,22 +38,12 @@ public class AutoDepotSide extends LinearOpMode
 
     {
 
-        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
 
-        parameters.mode = BNO055IMU.SensorMode.IMU;
-        parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
-        parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
-        parameters.loggingEnabled = false;
+        power = 0.8;
+        int tarPos = 1500;
 
-        imu = hardwareMap.get(BNO055IMU.class, "imu");
-        imu.initialize(parameters);
-
-        while (!isStopRequested() && !imu.isGyroCalibrated())
-        {
-            sleep(50);
-            idle();
-        }
-
+        telemetry.addData("Status","Initialize camera.");
+        telemetry.update();
         // Set up detector
         detector = new GoldAlignDetector(); // Create detector
         detector.init(hardwareMap.appContext, CameraViewDisplay.getInstance()); // Initialize it with the app context and camera
@@ -70,16 +63,18 @@ public class AutoDepotSide extends LinearOpMode
 
         detector.enable(); // Start the detector!
 
+        telemetry.addData("Status","Detector");
+        telemetry.update();
         //This section is the init section. This is where hardware map is put, and motors,
         //servos and sensors are initialized. Here we have hardware map for each of our motors.
-        power = 0.5;
-        int tarPos = 2000;
+
         teamMarker = hardwareMap.servo.get("tm");
         leftFront = hardwareMap.dcMotor.get("LeftFront");
         leftBack = hardwareMap.dcMotor.get("LeftBack");
         rightFront = hardwareMap.dcMotor.get("RightFront");
         rightBack = hardwareMap.dcMotor.get("RightBack");
         lScrew = hardwareMap.dcMotor.get("LScrew");
+        intake = hardwareMap.dcMotor.get("Intake");
 
         leftBack.setDirection(DcMotorSimple.Direction.REVERSE);
         leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -90,45 +85,73 @@ public class AutoDepotSide extends LinearOpMode
         rightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         lScrew.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        teamMarker.setPosition(1);
+        lScrew.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        //Servo stuff in init
+        teamMarker.setPosition(1
+        );
 
         waitForStart();
 
         //Everything after the waitForStart() call is in the start portion of the program.
         //This will run when the user presses the start button.
-        lScrew.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         lScrew.setPower(-1);
-        sleep(8000);
+        sleep(7500);
         lScrew.setPower(0);
+        telemetry.addData("Status" ,"Done Lowering");
+        telemetry.update();
 
-        encoderDrive(-500,-500,-500,-500);
-        encoderDrive(500, -500, -500, 500);
-        encoderDrive(500,500,500,500);
+        encoderDrive(-500,-500,-500,-500); // Moves towards Outtake side a little bit
+        encoderDrive(500, -500, -500, 500); // Moves fowards
+        encoderDrive(600,600,600,600); //  Moves towards Intake side a little bit
+        telemetry.addData("Status" ,"Off Hook");
+        telemetry.update();
+
 
         encoderDrive(tarPos,-tarPos,-tarPos,tarPos);
+        telemetry.addData("Status","Moving to minerals");
+        telemetry.update();
         if (detector.isFound()){ // Detects if the gold mineral is in the middle
-            encoderDrive(5000,-5000,-5000,5000); // Pushes it towards the depot ( sideways )
+            telemetry.addData("Location","Gold at Middle");
+            telemetry.update();
+            encoderDrive(4500,-4500,-4500,4500); // Pushes it towards the depot ( sideways )
+            MineralLocation = "Middle";
 
         }
         else {
-            encoderDrive(tarPos,tarPos,tarPos,tarPos); // Goes left ( forwards )
+            encoderDrive(2200,2200,2200,2200); // Goes left ( forwards )
             if (detector.isFound()){ // Detects if the gold mineral is on the left from the hanger
-                encoderDrive(5000, -5000, -5000, 5000); // Pushes it towards the depot ( sideways )
-                encoderDrive(-2000,-2000,-2000,-2000);
-
+                telemetry.addData("Location","Gold at Intake Side");
+                telemetry.update();
+                encoderDrive(4500, -4500, -4500, 4500); // Pushes it towards the depot ( sideways )
+                encoderDrive(-2000,-2000,-2000,-2000); // Centers in front of the depot
+                MineralLocation = "I Side"; //Intake side
             }
             else {
-                encoderDrive(-4000,-4000,-4000,-4000); // Goes right to the last cube ( backwards )
-                encoderDrive(5000,-5000,-5000, 5000);  // Pushes it towards the depot ( sideways )
-                encoderDrive(2000,2000,2000,2000);
+                telemetry.addData("Location","Gold at Outside side");
+                telemetry.update();
+                encoderDrive(-4500,-4500,-4500,-4500); // Goes right to the last cube ( backwards )
+                encoderDrive(4000,-4000,-4000, 4000);  // Pushes it towards the depot ( sideways )
+                encoderDrive(2000,2000,2000,2000); // Centers in front of the depot
+                MineralLocation = "O side"; //Outtake Side
+
             }
+
+
         }
 
 
 
-        encoderDrive(4000,-4000,-4000,4000);
+
+        encoderDrive(3000,-3000,-3000,3000); //Goes to Depot after gold is moved
+        // Deposits Team marker into Depot
         teamMarker.setPosition(0);
-        encoderDrive(500,500,-500,-500);
+        sleep(500);
+
+        encoderDrive(-1500,-1500,1500,1500); //Turns Toward Crater
+        encoderDrive(-500,-500,-500,-500);
+
+        encoderDrive(-14000,14000,14000,-14000); // Drive towards the crater
 
 
 
@@ -136,7 +159,8 @@ public class AutoDepotSide extends LinearOpMode
 
         }
 
-        detector.disable();
+        telemetry.addData("Status","Robot is in Stop");
+        detector.disable(); //Disables camera so it doesn't stay after opmode
 
 
     }
@@ -146,7 +170,7 @@ public class AutoDepotSide extends LinearOpMode
 
     public void encoderDrive(int lf, int lb, int rf, int rb)
     {
-        leftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        leftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION); //Runs to the given Position
         leftBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -154,36 +178,42 @@ public class AutoDepotSide extends LinearOpMode
 
 
         leftFront.setPower(power);
-        rightFront.setPower(power);
+        rightFront.setPower(power); //Runs at the given Power
         leftBack.setPower(power);
         rightBack.setPower(power);
 
-        leftFront.setTargetPosition((int) (leftFront.getCurrentPosition() + lf));
-        leftBack.setTargetPosition((int) (leftFront.getCurrentPosition() + lb));
-        rightFront.setTargetPosition((int) (leftFront.getCurrentPosition() + rf));
-        rightBack.setTargetPosition((int) (leftFront.getCurrentPosition() + rb));
+        leftFront.setTargetPosition((leftFront.getCurrentPosition() + lf));
+        leftBack.setTargetPosition((leftFront.getCurrentPosition() + lb));
+        rightFront.setTargetPosition((leftFront.getCurrentPosition() + rf));
+        rightBack.setTargetPosition((leftFront.getCurrentPosition() + rb));
 
         while(opModeIsActive() &&
                 leftFront.isBusy() && leftBack.isBusy() &&
                 rightFront.isBusy()&& rightBack.isBusy())
         {
+            telemetry.addData("Status","moving...");
             telemetry.addData("Left Front Encoder:",leftFront.getCurrentPosition());
             telemetry.addData("Left Back Encoder:",leftBack.getCurrentPosition());
             telemetry.addData("Right Front Encoder:",rightFront.getCurrentPosition());
             telemetry.addData("Right Back Encoder:",rightBack.getCurrentPosition());
-            telemetry.addData("Hang", lScrew.getCurrentPosition());
             telemetry.addData("isFound",detector.isFound());
             telemetry.update();
         }
+
+        leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
         leftFront.setPower(0);
         rightFront.setPower(0);
         leftBack.setPower(0);
         rightBack.setPower(0);
 
 
-        sleep(50);
+        sleep(25);
+        
+
 
     }
-
-    }
-
+}

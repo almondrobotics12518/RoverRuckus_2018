@@ -59,6 +59,8 @@ public class MecanumTeleOp extends OpMode {
         rightBack = hardwareMap.dcMotor.get("RightBack");
         arm = hardwareMap.dcMotor.get("Arm");
         intake = hardwareMap.crservo.get("intake");
+        slide = hardwareMap.dcMotor.get("Slide");
+        lScrew = hardwareMap.dcMotor.get("LScrew");
 
         // Reversing direction of right side motors
         //leftBack.setDirection(DcMotorSimple.Direction.FORWARD);
