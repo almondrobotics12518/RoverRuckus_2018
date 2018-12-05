@@ -82,7 +82,7 @@ public class AutoCraterSide extends LinearOpMode
         int tarPos0 = 2000;//determines how far the robot goes to sample the minerals
         int tarPos1 = 1400;//amount of encoder values in order to move cube
         int tarPos2 = 5000; // amount it moves between the minerals
-        int yeet = 0;
+        int yeet = 0;//determines how far it needs to go to be relatively centered away from depot
         /*lScrew.setPower(-1);
         sleep(10000);
         lScrew.setPower(0);
@@ -101,28 +101,35 @@ public class AutoCraterSide extends LinearOpMode
         if (detector.isFound()){ // If in Middle
             telemetry.addData("Status","Moving mineral");
             telemetry.update();
-            encoderDrive(tarPos1,-tarPos1,-tarPos1,tarPos1);
-            encoderDrive(-tarPos1-300,tarPos1+300,tarPos1+300,-tarPos1-300);
+            encoderDrive(tarPos1,-tarPos1,-tarPos1,tarPos1);//travels towards mineral
+            encoderDrive(-tarPos1-300,tarPos1+300,tarPos1+300,-tarPos1-300);//travels towards mineral some more
         } else {
             encoderDrive(-2000,-2000,-2000,-2000);
             if (detector.isFound()){ // If on Intake side
-                yeet = 2000;
-                encoderDrive(tarPos1,-tarPos1,-tarPos1,tarPos1);
-                encoderDrive(-tarPos1-300,tarPos1+300,tarPos1+300,-tarPos1-300);
+                yeet = 2000;//set yeet for future instruction
+                telemetry.addData("Status","Moving mineral on Intake side.");
+                telemetry.update();
+                encoderDrive(tarPos1,-tarPos1,-tarPos1,tarPos1);//moves mineral
+                encoderDrive(-tarPos1-300,tarPos1+300,tarPos1+300,-tarPos1-300);//moves back
 
-            } else { // If on Outake side
-                yeet = -2000;
-                encoderDrive(4000,4000,4000,4000);
-                encoderDrive(tarPos1,-tarPos1,-tarPos1,tarPos1);
-                encoderDrive(-tarPos1-300,tarPos1+300,tarPos1+300,-tarPos1-300);
+            } else { // If on Outtake side
+                yeet = -2000;//sets yeet for future instruction
+                telemetry.addData("Status","Moving mineral on Outtake side.");
+                encoderDrive(4000,4000,4000,4000);//goes in front of other mineral
+                encoderDrive(tarPos1,-tarPos1,-tarPos1,tarPos1);//moves mineral
+                encoderDrive(-tarPos1-300,tarPos1+300,tarPos1+300,-tarPos1-300);//travels back
             }
         }
+        telemetry.addData("Status","Centering past minerals");
+        telemetry.update();
         power = 0.7;
-        encoderDrive(yeet+tarPos2,yeet+tarPos2,yeet+tarPos2,yeet+tarPos2);
-        power = 0.3;
-        encoderDrive(-4700,-4700,4700,4700);
-        power = 0.7;
-        encoderDrive(-5000,5000,5000,-5000);
+        encoderDrive(yeet+tarPos2,yeet+tarPos2,yeet+tarPos2,yeet+tarPos2);//moving forwards from minerals
+        telemetry.addData("Status","turning to depot");
+        power = 0.3;// change power
+        encoderDrive(-4700,-4700,4700,4700);//turns towards depot
+        telemetry.addData("Status","moving to depot");
+        power = 0.7;//changes power
+        encoderDrive(-5000,5000,5000,-5000);//moves towards depot
 
         while(opModeIsActive()){
 

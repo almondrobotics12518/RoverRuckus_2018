@@ -15,8 +15,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
-@Autonomous
-
+@Autonomous(name="DepotSidetoAllyCrater",group="test")
 public class AutoDepotSide extends LinearOpMode
 {
 
@@ -25,7 +24,6 @@ public class AutoDepotSide extends LinearOpMode
     private DcMotor rightFront;
     private DcMotor rightBack;
     private DcMotor lScrew;
-    private DcMotor intake;
     BNO055IMU imu;
     private Servo teamMarker;
     private GoldAlignDetector detector;
@@ -74,7 +72,6 @@ public class AutoDepotSide extends LinearOpMode
         rightFront = hardwareMap.dcMotor.get("RightFront");
         rightBack = hardwareMap.dcMotor.get("RightBack");
         lScrew = hardwareMap.dcMotor.get("LScrew");
-        intake = hardwareMap.dcMotor.get("Intake");
 
         leftBack.setDirection(DcMotorSimple.Direction.REVERSE);
         leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -86,6 +83,7 @@ public class AutoDepotSide extends LinearOpMode
         lScrew.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         lScrew.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        lScrew.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         //Servo stuff in init
         teamMarker.setPosition(1
@@ -96,7 +94,7 @@ public class AutoDepotSide extends LinearOpMode
         //Everything after the waitForStart() call is in the start portion of the program.
         //This will run when the user presses the start button.
         lScrew.setPower(-1);
-        sleep(7500);
+        sleep(8000);
         lScrew.setPower(0);
         telemetry.addData("Status" ,"Done Lowering");
         telemetry.update();
@@ -148,9 +146,11 @@ public class AutoDepotSide extends LinearOpMode
         teamMarker.setPosition(0);
         sleep(500);
 
-        encoderDrive(-1500,-1500,1500,1500); //Turns Toward Crater
+        power = 0.3;
+        encoderDrive(-1300,-1300,1300,1300); //Turns Toward Crater
         encoderDrive(-500,-500,-500,-500);
 
+        power = 0.8;
         encoderDrive(-14000,14000,14000,-14000); // Drive towards the crater
 
 
@@ -212,7 +212,7 @@ public class AutoDepotSide extends LinearOpMode
 
 
         sleep(25);
-        
+
 
 
     }
