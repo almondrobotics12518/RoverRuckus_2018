@@ -94,7 +94,7 @@ public class AutoCraterSide extends LinearOpMode
         power = 0.5;
         telemetry.addData("Status","Moving to mineral");
         telemetry.update();
-        
+
 
         encoderDrive(tarPos0,-tarPos0,-tarPos0,tarPos0);
 
