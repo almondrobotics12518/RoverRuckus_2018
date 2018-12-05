@@ -83,18 +83,18 @@ public class AutoCraterSide extends LinearOpMode
         int tarPos1 = 1400;//amount of encoder values in order to move cube
         int tarPos2 = 5000; // amount it moves between the minerals
         int yeet = 0;//determines how far it needs to go to be relatively centered away from depot
-        /*lScrew.setPower(-1);
-        sleep(10000);
+        lScrew.setPower(-1);
+        sleep(8000);
         lScrew.setPower(0);
 
         power = 0.5;
         encoderDrive(-500,-500,-500,-500);
         encoderDrive(500, -500, -500, 500);
-        encoderDrive(500,500,500,500);*/
+        encoderDrive(500,500,500,500);
         power = 0.5;
         telemetry.addData("Status","Moving to mineral");
         telemetry.update();
-        encoderDrive(500,-500,-500,500);
+        
 
         encoderDrive(tarPos0,-tarPos0,-tarPos0,tarPos0);
 

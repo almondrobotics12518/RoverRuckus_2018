@@ -147,11 +147,11 @@ public class AutoDepotSide extends LinearOpMode
         sleep(500);
 
         power = 0.3;
-        encoderDrive(-1300,-1300,1300,1300); //Turns Toward Crater
+        encoderDrive(-1200,-1200,1200,1200); //Turns Toward Crater
         encoderDrive(-500,-500,-500,-500);
 
         power = 0.8;
-        encoderDrive(-14000,14000,14000,-14000); // Drive towards the crater
+        encoderDrive(-12000,12000,12000,-12000); // Drive towards the crater
 
 
 
