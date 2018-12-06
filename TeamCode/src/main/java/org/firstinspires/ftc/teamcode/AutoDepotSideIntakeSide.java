@@ -15,7 +15,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
-@Autonomous(name="DepotSidetoAllyCrater",group="test")
+@Autonomous(name="DepotSidetoEnemyCrater",group="test")
 public class AutoDepotSideIntakeSide extends LinearOpMode
 {
 

@@ -74,24 +74,27 @@ public class AutoCraterSide extends LinearOpMode
         lScrew.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         lScrew.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        teamMarker.setPosition(1);
         waitForStart();
 
         //Everything after the waitForStart() call is in the start portion of the program.
         //This will run when the user presses the start button.
 
-        int tarPos0 = 2000;//determines how far the robot goes to sample the minerals
-        int tarPos1 = 1400;//amount of encoder values in order to move cube
+        int tarPos0 = 2600;//determines how far the robot goes to sample the minerals
+        int tarPos1 = 1000;//amount of encoder values in order to move cube
         int tarPos2 = 5000; // amount it moves between the minerals
         int yeet = 0;//determines how far it needs to go to be relatively centered away from depot
         lScrew.setPower(-1);
-        sleep(8000);
+        sleep(8200);
         lScrew.setPower(0);
 
         power = 0.5;
         encoderDrive(-500,-500,-500,-500);
         encoderDrive(500, -500, -500, 500);
-        encoderDrive(500,500,500,500);
-        power = 0.5;
+        encoderDrive(500,500,450,450);
+
+        power = 1;
         telemetry.addData("Status","Moving to mineral");
         telemetry.update();
 
@@ -104,35 +107,50 @@ public class AutoCraterSide extends LinearOpMode
             encoderDrive(tarPos1,-tarPos1,-tarPos1,tarPos1);//travels towards mineral
             encoderDrive(-tarPos1-300,tarPos1+300,tarPos1+300,-tarPos1-300);//travels towards mineral some more
         } else {
-            encoderDrive(-2000,-2000,-2000,-2000);
+            encoderDrive(-2200,-2200,-2200,-2200);
             if (detector.isFound()){ // If on Intake side
-                yeet = 2000;//set yeet for future instruction
+                yeet = 1900;//set yeet for future instruction
                 telemetry.addData("Status","Moving mineral on Intake side.");
                 telemetry.update();
                 encoderDrive(tarPos1,-tarPos1,-tarPos1,tarPos1);//moves mineral
                 encoderDrive(-tarPos1-300,tarPos1+300,tarPos1+300,-tarPos1-300);//moves back
 
             } else { // If on Outtake side
-                yeet = -2000;//sets yeet for future instruction
+                yeet = -1900;//sets yeet for future instruction
                 telemetry.addData("Status","Moving mineral on Outtake side.");
                 encoderDrive(4000,4000,4000,4000);//goes in front of other mineral
                 encoderDrive(tarPos1,-tarPos1,-tarPos1,tarPos1);//moves mineral
                 encoderDrive(-tarPos1-300,tarPos1+300,tarPos1+300,-tarPos1-300);//travels back
+
+                leftFront.setPower(0);
+                rightFront.setPower(0);
+                leftBack.setPower(0);
+                rightBack.setPower(0);
             }
         }
         telemetry.addData("Status","Centering past minerals");
         telemetry.update();
-        power = 0.7;
+        power = 1;
         encoderDrive(yeet+tarPos2,yeet+tarPos2,yeet+tarPos2,yeet+tarPos2);//moving forwards from minerals
         telemetry.addData("Status","turning to depot");
-        power = 0.3;// change power
-        encoderDrive(-4700,-4700,4700,4700);//turns towards depot
+        power = 1;// change power
+        encoderDrive(-4100,-4100,4100,4100);//turns towards depot
         telemetry.addData("Status","moving to depot");
-        power = 0.7;//changes power
-        encoderDrive(-5000,5000,5000,-5000);//moves towards depot
+        power = 1;//changes power
+        encoderDrive(-1100,-1100,-1100,-1100);
+        encoderDrive(7000,-7000,-7000,7000);//moves towards depot
+        // Deposits Team marker into Depot
+        teamMarker.setPosition(0);
+        sleep(500);
 
+        encoderDrive(-12000,12000,12000,-12000);
         while(opModeIsActive()){
+            if(isStopRequested()){
+                telemetry.addData("Status","stop");
+                telemetry.update();
+                detector.disable();
 
+            }
         }
         telemetry.addData("Status","stop");
         telemetry.update();
@@ -172,6 +190,8 @@ public class AutoCraterSide extends LinearOpMode
             telemetry.addData("Right Front Encoder:",rightFront.getCurrentPosition());
             telemetry.addData("Right Back Encoder:",rightBack.getCurrentPosition());
             telemetry.addData("isFound",detector.isFound());
+            telemetry.addData("XPosition",detector.getXPosition());
+            telemetry.addData("YPosition",detector.getYPosition());
             telemetry.update();
         }
 
