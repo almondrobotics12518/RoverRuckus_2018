@@ -94,7 +94,7 @@ public class AutoCraterSideHighPower extends LinearOpMode
         encoderDrive(-500,-500,-500,-500);
         encoderDrive(500, -500, -500, 500);
         encoderDrive(500,500,500,500);
-        encoderDrive(-100,-100,100,100);
+        //encoderDrive(100,100,-100,-100);
 
         power = 1;
         telemetry.addData("Status","Moving to mineral");
@@ -103,17 +103,15 @@ public class AutoCraterSideHighPower extends LinearOpMode
 
         encoderDrive(tarPos0,-tarPos0,-tarPos0,tarPos0);
 
-        if (detector.isFound() && detector.getHeight() > 100){ // If in Middle
-            detector.disable();//disables camera
+        if (detector.isFound() && detector.getHeight() > 40){ // If in Middle
             telemetry.addData("Status","Moving mineral");
             telemetry.update();
-            b = -200;
+            b = -100;
             encoderDrive(tarPos1,-tarPos1,-tarPos1,tarPos1);//travels towards mineral
             encoderDrive(-tarPos1-300,tarPos1+300,tarPos1+300,-tarPos1-300);//travels towards mineral some more
         } else {
             encoderDrive(-2200,-2200,-2200,-2200);
-            if (detector.isFound() && detector.getHeight() > 100){ // If on Intake side
-                detector.disable();//disables camera
+            if (detector.isFound() && detector.getHeight() > 40){ // If on Intake side
                 yeet = 2200;//set yeet for future instruction
                 b = 100;
                 telemetry.addData("Status","Moving mineral on Intake side.");
@@ -122,7 +120,6 @@ public class AutoCraterSideHighPower extends LinearOpMode
                 encoderDrive(-tarPos1-300,tarPos1+300,tarPos1+300,-tarPos1-300);//moves back
 
             } else { // If on Outtake side
-                detector.disable();//disables camera
                 yeet = -2500;//sets yeet for future instruction
                 int g = 100;
                 b = g;
@@ -133,6 +130,7 @@ public class AutoCraterSideHighPower extends LinearOpMode
 
             }
         }
+        detector.disable();
         telemetry.addData("Status","Centering past minerals");
         telemetry.update();
         power = 1;
@@ -144,7 +142,7 @@ public class AutoCraterSideHighPower extends LinearOpMode
         encoderDrive(8000,8000,8000,8000);//moves into depot
         teamMarker.setPosition(0);//dumps team marker
         sleep(500);//does nothing for 0.5 seconds
-        encoderDrive(-14000,-14000,-14000,-14000);
+        encoderDrive(-13000,-13000,-13000,-13000);
 
 
         /*encoderDrive(-4100,-4100,4100,4100);//turns towards depot

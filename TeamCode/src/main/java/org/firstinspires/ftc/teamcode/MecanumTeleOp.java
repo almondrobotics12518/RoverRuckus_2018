@@ -116,6 +116,7 @@ public class MecanumTeleOp extends OpMode {
         telemetry.addData("RightBack",rightBack.getCurrentPosition());
         telemetry.addData("Hang",lScrew.getCurrentPosition());
         telemetry.addData("Arm zeroPowerBehavior",arm.getZeroPowerBehavior());
+        telemetry.addData("Slide",slide.getCurrentPosition());
         telemetry.update();
 
 
