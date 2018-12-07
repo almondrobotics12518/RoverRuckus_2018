@@ -15,8 +15,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
-@Autonomous(name="CraterSideLowerPower",group="AutoCraterSide")
-public class AutoCraterSide extends LinearOpMode
+@Autonomous(name="CraterSideHighPower",group="AutoCraterSide")
+public class AutoCraterSideHighPower extends LinearOpMode
 {
 
     private DcMotor leftFront;
@@ -81,18 +81,20 @@ public class AutoCraterSide extends LinearOpMode
         //Everything after the waitForStart() call is in the start portion of the program.
         //This will run when the user presses the start button.
 
-        int tarPos0 = 2400;//determines how far the robot goes to sample the minerals
-        int tarPos1 = 1200;//amount of encoder values in order to move cube
+        int tarPos0 = 2200;//determines how far the robot goes to sample the minerals
+        int tarPos1 = 1500;//amount of encoder values in order to move cube
         int tarPos2 = 5000; // amount it moves between the minerals
         int yeet = 0;//determines how far it needs to go to be relatively centered away from depot
+        int b = 0;
         lScrew.setPower(-1);
-        sleep(8000);
+        sleep(7400);
         lScrew.setPower(0);
 
         power = 0.5;
         encoderDrive(-500,-500,-500,-500);
         encoderDrive(500, -500, -500, 500);
         encoderDrive(500,500,500,500);
+        encoderDrive(-100,-100,100,100);
 
         power = 1;
         telemetry.addData("Status","Moving to mineral");
@@ -105,6 +107,7 @@ public class AutoCraterSide extends LinearOpMode
             detector.disable();//disables camera
             telemetry.addData("Status","Moving mineral");
             telemetry.update();
+            b = -200;
             encoderDrive(tarPos1,-tarPos1,-tarPos1,tarPos1);//travels towards mineral
             encoderDrive(-tarPos1-300,tarPos1+300,tarPos1+300,-tarPos1-300);//travels towards mineral some more
         } else {
@@ -112,6 +115,7 @@ public class AutoCraterSide extends LinearOpMode
             if (detector.isFound() && detector.getHeight() > 100){ // If on Intake side
                 detector.disable();//disables camera
                 yeet = 2200;//set yeet for future instruction
+                b = 100;
                 telemetry.addData("Status","Moving mineral on Intake side.");
                 telemetry.update();
                 encoderDrive(tarPos1,-tarPos1,-tarPos1,tarPos1);//moves mineral
@@ -119,7 +123,9 @@ public class AutoCraterSide extends LinearOpMode
 
             } else { // If on Outtake side
                 detector.disable();//disables camera
-                yeet = -2200;//sets yeet for future instruction
+                yeet = -2500;//sets yeet for future instruction
+                int g = 100;
+                b = g;
                 telemetry.addData("Status","Moving mineral on Outtake side.");
                 encoderDrive(4400,4400,4400,4400);//goes in front of other mineral
                 encoderDrive(tarPos1,-tarPos1,-tarPos1,tarPos1);//moves mineral
@@ -133,15 +139,12 @@ public class AutoCraterSide extends LinearOpMode
         encoderDrive(yeet+tarPos2,yeet+tarPos2,yeet+tarPos2,yeet+tarPos2);//moving forwards from minerals
         telemetry.addData("Status","turning to depot");
         power = 1;// change power
-        encoderDrive(-1300,-1300,1300,1300);//turns towards depot
+        encoderDrive(-1300-b,-1300-b,1300+b,1300+b);//turns towards depot
         encoderDrive(1000,-1000,-1000,1000);//moves sideways towards wall
         encoderDrive(8000,8000,8000,8000);//moves into depot
-        encoderDrive(-1000,1000,1000,-1000);//moves away from wall
         teamMarker.setPosition(0);//dumps team marker
         sleep(500);//does nothing for 0.5 seconds
-        encoderDrive(-3000,-3000,-3000,-3000);
-        encoderDrive(500,-500,-500,500);
-        encoderDrive(-10000,-10000,-10000,-10000);
+        encoderDrive(-14000,-14000,-14000,-14000);
 
 
         /*encoderDrive(-4100,-4100,4100,4100);//turns towards depot

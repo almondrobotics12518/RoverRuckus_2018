@@ -28,7 +28,7 @@ public class AutoDepotSideIntakeSide extends LinearOpMode
     private Servo teamMarker;
     private GoldAlignDetector detector;
     private String MineralLocation;
-
+    private int offset;
     private double power;
 
     @Override
@@ -94,7 +94,7 @@ public class AutoDepotSideIntakeSide extends LinearOpMode
         //Everything after the waitForStart() call is in the start portion of the program.
         //This will run when the user presses the start button.
         lScrew.setPower(-1);
-        sleep(8000);
+        sleep(7500);
         lScrew.setPower(0);
         telemetry.addData("Status" ,"Done Lowering");
         telemetry.update();
@@ -102,6 +102,7 @@ public class AutoDepotSideIntakeSide extends LinearOpMode
         encoderDrive(-500,-500,-500,-500); // Moves towards Outtake side a little bit
         encoderDrive(500, -500, -500, 500); // Moves fowards
         encoderDrive(600,600,600,600); //  Moves towards Intake side a little bit
+        encoderDrive(-100,-100,100,100);
         telemetry.addData("Status" ,"Off Hook");
         telemetry.update();
 
@@ -110,6 +111,7 @@ public class AutoDepotSideIntakeSide extends LinearOpMode
         telemetry.addData("Status","Moving to minerals");
         telemetry.update();
         if (detector.isFound()){ // Detects if the gold mineral is in the middle
+            detector.disable();
             telemetry.addData("Location","Gold at Middle");
             telemetry.update();
             encoderDrive(4500,-4500,-4500,4500); // Pushes it towards the depot ( sideways )
@@ -119,6 +121,7 @@ public class AutoDepotSideIntakeSide extends LinearOpMode
         else {
             encoderDrive(2200,2200,2200,2200); // Goes left ( forwards )
             if (detector.isFound()){ // Detects if the gold mineral is on the left from the hanger
+                detector.disable();
                 telemetry.addData("Location","Gold at Intake Side");
                 telemetry.update();
                 encoderDrive(4500, -4500, -4500, 4500); // Pushes it towards the depot ( sideways )
@@ -126,10 +129,11 @@ public class AutoDepotSideIntakeSide extends LinearOpMode
                 MineralLocation = "I Side"; //Intake side
             }
             else {
+                detector.disable();
                 telemetry.addData("Location","Gold at Outside side");
                 telemetry.update();
                 encoderDrive(-4500,-4500,-4500,-4500); // Goes right to the last cube ( backwards )
-                encoderDrive(4000,-4000,-4000, 4000);  // Pushes it towards the depot ( sideways )
+                encoderDrive(4500,-4500,-4500, 4500);  // Pushes it towards the depot ( sideways )
                 encoderDrive(2000,2000,2000,2000); // Centers in front of the depot
                 MineralLocation = "O side"; //Outtake Side
 
@@ -146,12 +150,12 @@ public class AutoDepotSideIntakeSide extends LinearOpMode
         teamMarker.setPosition(0);
         sleep(500);
 
-        power = 0.3;
-        encoderDrive(1300,1300,-1300,-1300); //Turns Toward Crater on Intake Side
-        encoderDrive(500,500,500,500); // Goes forward to center in the depot
+        power = 1;
+        encoderDrive(1350,1350,-1350,-1350); //Turns Toward Crater on Intake Side
+        encoderDrive(800,800,800,800); // Goes forward to center in the depot
 
-        power = 0.8;
-        encoderDrive(-13500,13500,13500,-13500); // Drive towards the crater
+        power = 1;
+        encoderDrive(-11500,11500,11500,-11500); // Drive towards the crater
 
 
 

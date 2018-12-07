@@ -97,7 +97,7 @@ public class MecanumTeleOp extends OpMode {
 
         lScrew.setPower(gamepad1.right_trigger-gamepad1.left_trigger); // Gives power to the lScrew
 
-        arm.setPower(-gamepad2.right_stick_y); // Gives power to the arm
+        arm.setPower(-gamepad2.right_stick_y * 0.8); // Gives power to the arm
 
         intake.setPower(gamepad2.right_trigger-gamepad2.left_trigger); //Spins the Intake
 

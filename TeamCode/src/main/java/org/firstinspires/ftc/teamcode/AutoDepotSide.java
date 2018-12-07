@@ -105,6 +105,7 @@ public class AutoDepotSide extends LinearOpMode
         telemetry.addData("Status" ,"Off Hook");
         telemetry.update();
 
+        power = 1;
 
         encoderDrive(tarPos,-tarPos,-tarPos,tarPos);
         telemetry.addData("Status","Moving to minerals");
@@ -146,12 +147,12 @@ public class AutoDepotSide extends LinearOpMode
         teamMarker.setPosition(0);
         sleep(500);
 
-        power = 0.3;
-        encoderDrive(-1300,-1300,1300,1300); //Turns Toward Crater on Outtake Side
+        power = 1;
+        encoderDrive(-1350,-1350,1350,1350); //Turns Toward Crater on Outtake Side
         encoderDrive(-500,-500,-500,-500);
 
-        power = 0.8;
-        encoderDrive(-13500,13500,13500,-13500); // Drive towards the crater
+        power = 1;
+        encoderDrive(-11000,11000,11000,-11000); // Drive towards the crater
 
 
 

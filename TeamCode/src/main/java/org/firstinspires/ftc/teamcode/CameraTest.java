@@ -10,8 +10,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 @TeleOp(name="CameraTest", group="DogeCV")
 
-public class CameraTest extends OpMode
-{
+public class CameraTest extends OpMode {
     // Detector object
     private GoldAlignDetector detector;
 
@@ -62,18 +61,18 @@ public class CameraTest extends OpMode
      */
     @Override
     public void loop() {
-        telemetry.addData("IsAligned" , detector.getAligned()); // Is the bot aligned with the gold mineral?
-        telemetry.addData("X Pos" , detector.getXPosition()); // Gold X position.
-        telemetry.addData("Y Pos",detector.getYPosition());
+        telemetry.addData("IsAligned", detector.getAligned()); // Is the bot aligned with the gold mineral?
+        telemetry.addData("X Pos", detector.getXPosition()); // Gold X position.
+        telemetry.addData("Y Pos", detector.getYPosition());
+        telemetry.addData("Mineral width", detector.getWidth());
+        telemetry.addData("Mineral height", detector.getHeight());
+        telemetry.addData("",detector.getCameraView());
     }
+        @Override
+        public void stop () {
+            // Disable the detector
+            detector.disable();
+        }
 
-    /*
-     * Code to run ONCE after the driver hits STOP
-     */
-    @Override
-    public void stop() {
-        // Disable the detector
-        detector.disable();
-    }
 
 }

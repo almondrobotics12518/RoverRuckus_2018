@@ -38,6 +38,8 @@ public class GoldAlignDetector extends DogeCVDetector {
     private boolean aligned  = false; // Is the gold mineral aligned
     private double  goldXPos = 0;     // X Position (in pixels) of the gold element
     private double  goldYPos = 0;
+    private double  rectWidth = 0;
+    private double  rectHeight = 0;
 
     // Detector settings
     public boolean debugAlignment = true; // Show debug lines to show alignment settings
@@ -117,7 +119,10 @@ public class GoldAlignDetector extends DogeCVDetector {
             goldXPos = xPos;
             double yPos = bestRect.y + (bestRect.height/2);
             goldYPos = yPos;
-
+            double width = bestRect.width;
+            double height = bestRect.height;
+            rectWidth = width;
+            rectHeight = height;
 
 
             // Draw center point
@@ -198,6 +203,10 @@ public class GoldAlignDetector extends DogeCVDetector {
     }
 
     public double getYPosition() { return goldYPos; }
+
+    public double getWidth() { return rectWidth; }
+
+    public double getHeight() { return rectHeight; }
 
     /**
      * Returns if a gold mineral is being tracked/detected
