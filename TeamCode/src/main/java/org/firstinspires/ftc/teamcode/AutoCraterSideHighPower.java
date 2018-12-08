@@ -87,13 +87,13 @@ public class AutoCraterSideHighPower extends LinearOpMode
         int yeet = 0;//determines how far it needs to go to be relatively centered away from depot
         int b = 0;
         lScrew.setPower(-1);
-        sleep(7400);
+        sleep(11000);
         lScrew.setPower(0);
 
-        power = 0.5;
-        encoderDrive(-500,-500,-500,-500);
-        encoderDrive(500, -500, -500, 500);
+        power = 1;
         encoderDrive(500,500,500,500);
+        encoderDrive(700, -700, -700, 700);
+        encoderDrive(-500,-500,-500,-500);
         //encoderDrive(100,100,-100,-100);
 
         power = 1;
@@ -103,7 +103,7 @@ public class AutoCraterSideHighPower extends LinearOpMode
 
         encoderDrive(tarPos0,-tarPos0,-tarPos0,tarPos0);
 
-        if (detector.isFound() && detector.getHeight() > 40){ // If in Middle
+        if (detector.isFound() && detector.getWidth() > 40){ // If in Middle
             telemetry.addData("Status","Moving mineral");
             telemetry.update();
             b = -100;
@@ -111,7 +111,7 @@ public class AutoCraterSideHighPower extends LinearOpMode
             encoderDrive(-tarPos1-300,tarPos1+300,tarPos1+300,-tarPos1-300);//travels towards mineral some more
         } else {
             encoderDrive(-2200,-2200,-2200,-2200);
-            if (detector.isFound() && detector.getHeight() > 40){ // If on Intake side
+            if (detector.isFound() && detector.getWidth() > 40){ // If on Intake side
                 yeet = 2200;//set yeet for future instruction
                 b = 100;
                 telemetry.addData("Status","Moving mineral on Intake side.");
@@ -138,11 +138,15 @@ public class AutoCraterSideHighPower extends LinearOpMode
         telemetry.addData("Status","turning to depot");
         power = 1;// change power
         encoderDrive(-1300-b,-1300-b,1300+b,1300+b);//turns towards depot
-        encoderDrive(1000,-1000,-1000,1000);//moves sideways towards wall
+        encoderDrive(2000,-2000,-2000,2000);//moves sideways towards wall
         encoderDrive(8000,8000,8000,8000);//moves into depot
+
+        encoderDrive(-1000,1000,1000,-1000);
         teamMarker.setPosition(0);//dumps team marker
         sleep(500);//does nothing for 0.5 seconds
-        encoderDrive(-13000,-13000,-13000,-13000);
+        encoderDrive(-2000,-2000,-2000,-2000);
+        encoderDrive(1000,-1000,-1000,1000);
+        encoderDrive(-10000,-10000,-10000,-10000);
 
 
         /*encoderDrive(-4100,-4100,4100,4100);//turns towards depot
@@ -155,16 +159,12 @@ public class AutoCraterSideHighPower extends LinearOpMode
         sleep(500);
 
         encoderDrive(-12000,12000,12000,-12000);*/
-        while(opModeIsActive()){
+        /*while(opModeIsActive()){
             if(isStopRequested()){
-                telemetry.addData("Status","stop");
-                telemetry.update();
                 detector.disable();
 
             }
-        }
-        telemetry.addData("Status","stop");
-        telemetry.update();
+        }*/
         detector.disable();
 
 
@@ -194,15 +194,12 @@ public class AutoCraterSideHighPower extends LinearOpMode
 
         while(opModeIsActive() &&
                 leftFront.isBusy() && leftBack.isBusy() &&
-                rightFront.isBusy()&& rightBack.isBusy())
+                rightFront.isBusy()&& rightBack.isBusy() && !isStarted())
         {
             telemetry.addData("Left Front Encoder:",leftFront.getCurrentPosition());
             telemetry.addData("Left Back Encoder:",leftBack.getCurrentPosition());
             telemetry.addData("Right Front Encoder:",rightFront.getCurrentPosition());
             telemetry.addData("Right Back Encoder:",rightBack.getCurrentPosition());
-            telemetry.addData("isFound",detector.isFound());
-            telemetry.addData("XPosition",detector.getXPosition());
-            telemetry.addData("YPosition",detector.getYPosition());
             telemetry.update();
         }
 
@@ -216,8 +213,8 @@ public class AutoCraterSideHighPower extends LinearOpMode
         leftBack.setPower(0);
         rightBack.setPower(0);
 
-
         sleep(50);
+
 
     }
 

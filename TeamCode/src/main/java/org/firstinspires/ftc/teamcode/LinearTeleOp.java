@@ -28,6 +28,7 @@ public class LinearTeleOp extends LinearOpMode {
 
     @Override
     public void runOpMode() {
+        // Setting dcMotor variables to motors
         leftFront = hardwareMap.dcMotor.get("LeftFront");
         leftBack = hardwareMap.dcMotor.get("LeftBack");
         rightFront = hardwareMap.dcMotor.get("RightFront");
@@ -72,11 +73,11 @@ public class LinearTeleOp extends LinearOpMode {
 
             lScrew.setPower(gamepad1.right_trigger-gamepad1.left_trigger); // Gives power to the lScrew
 
-            arm.setPower(-gamepad2.right_stick_y*0.6); // Gives power to the arm
+            arm.setPower(-gamepad2.right_stick_y * 0.8); // Gives power to the arm
 
             intake.setPower(gamepad2.right_trigger-gamepad2.left_trigger); //Spins the Intake
 
-            slide.setPower(-gamepad2.left_stick_y); // Gives power to the slide
+            slide.setPower(-gamepad2.left_stick_y*0.5); // Gives power to the slide
 
             // Add telemetry variables and updating them
             telemetry.addData("FrontLeftPower",LF);
@@ -90,8 +91,19 @@ public class LinearTeleOp extends LinearOpMode {
             telemetry.addData("RightBack",rightBack.getCurrentPosition());
             telemetry.addData("Hang",lScrew.getCurrentPosition());
             telemetry.addData("Arm zeroPowerBehavior",arm.getZeroPowerBehavior());
+            telemetry.addData("Slide",slide.getCurrentPosition());
             telemetry.update();
+
+            idle();
         }
+        leftFront.setPower(0);
+        leftBack.setPower(0);
+        rightFront.setPower(0);
+        rightBack.setPower(0);
+        slide.setPower(0);
+        arm.setPower(0);
+        lScrew.setPower(0);
+
 
 
     }
