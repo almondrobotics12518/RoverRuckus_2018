@@ -2,12 +2,13 @@ package org.firstinspires.ftc.teamcode;
 
 import com.disnodeteam.dogecv.detectors.roverrukus.GoldAlignDetector;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 
-
+@TeleOp(name="LinearTeleOp",group="yeet")
 public class LinearTeleOp extends LinearOpMode {
 
     private DcMotor lScrew;
@@ -53,8 +54,8 @@ public class LinearTeleOp extends LinearOpMode {
         lScrew.setMode(DcMotor.RunMode.RUN_USING_ENCODER);*/
 
         waitForStart();
-
-        while(opModeIsActive()){
+        boolean isRunning = true;
+        while(isRunning && opModeIsActive()){
             leftX = -gamepad1.left_stick_x; // Reverse left joystick's X coordinate
             leftY = gamepad1.left_stick_y; // Reverse left joystick's Y coordinate
             rightX = -gamepad1.right_stick_x;
@@ -95,6 +96,10 @@ public class LinearTeleOp extends LinearOpMode {
             telemetry.update();
 
             idle();
+            if (isStopRequested()) {
+                isRunning = false;
+            }
+
         }
         leftFront.setPower(0);
         leftBack.setPower(0);

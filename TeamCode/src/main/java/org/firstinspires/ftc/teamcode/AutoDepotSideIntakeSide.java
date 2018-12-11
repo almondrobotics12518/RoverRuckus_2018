@@ -125,7 +125,7 @@ public class AutoDepotSideIntakeSide extends LinearOpMode
                 if (detector.isFound()&&detector.getWidth()>40){ // Detects if the gold mineral is on the left from the hanger
                     telemetry.addData("Location","Gold at Intake Side");
                     telemetry.update();
-                    encoderDrive(4500, -4500, -4500, 4500); // Pushes it towards the depot ( sideways )
+                    encoderDrive(6000, -6000, -6000, 6000); // Pushes it towards the depot ( sideways )
                     encoderDrive(-2000,-2000,-2000,-2000); // Centers in front of the depot
                     MineralLocation = "I Side"; //Intake side
 
@@ -133,8 +133,8 @@ public class AutoDepotSideIntakeSide extends LinearOpMode
                 else {
                     telemetry.addData("Location","Gold at Outside side");
                     telemetry.update();
-                    encoderDrive(-4500,-4500,-4500,-4500); // Goes right to the last cube ( backwards )
-                    encoderDrive(4000,-4000,-4000, 4000);  // Pushes it towards the depot ( sideways )
+                    encoderDrive(-6000,-6000,-6000,-6000); // Goes right to the last cube ( backwards )
+                    encoderDrive(6000,-6000,-6000, 5000);  // Pushes it towards the depot ( sideways )
                     encoderDrive(2000,2000,2000,2000); // Centers in front of the depot
                     MineralLocation = "O side"; //Outtake Side
                     turn = 200;
@@ -144,8 +144,8 @@ public class AutoDepotSideIntakeSide extends LinearOpMode
                 }
                 detector.disable();
 
-
-                encoderDrive(3000,-3000,-3000,3000); //Goes to Depot after gold is moved
+                //goes to Depot
+                encoderDrive(2500,-2500,-2500,2500); //Goes to Depot after gold is moved
                 // Deposits Team marker into Depot
                 teamMarker.setPosition(0);
                 sleep(500);
@@ -153,7 +153,7 @@ public class AutoDepotSideIntakeSide extends LinearOpMode
                 power = 1;
                 encoderDrive(1350+turn,1350+turn,-1350-turn,-1350-turn); //Turns Toward Crater on Outtake Side
                 encoderDrive(1000,1000,1000,1000);
-                 isRunning = false;
+                isRunning = false;
 
             }
 
@@ -218,6 +218,6 @@ public class AutoDepotSideIntakeSide extends LinearOpMode
         rightBack.setPower(0);
 
         sleep(50);
-        
+
     }
 }
