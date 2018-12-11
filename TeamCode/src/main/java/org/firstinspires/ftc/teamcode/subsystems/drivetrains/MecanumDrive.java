@@ -44,7 +44,7 @@ public class MecanumDrive {
         this.rb.setTargetPosition(rb);
     }
 
-    public void setMode(RunMode mode){
+    public void setMode(DcMotor.RunMode mode){
         switch(mode){
             case RUN_TO_POSITION:
                 lf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
