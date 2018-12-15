@@ -55,31 +55,36 @@ public class DepotSide extends AlmondLinear
                 driveToPosition(-1350,-1350,1350,1350,1);
                 teamMarker.setPosition(0);
             } else {
-                driveToPosition(1000,1000,-1000,-1000,1);
+                driveToPosition(1100,1100,-1100,-1100,1);
                 if(detector.isFound()&&detector.getWidth()>40)
                 {
                     driveToPosition(5000,-5000,-5000,5000,1);
-                    driveToPosition(200,200,-200,-200,1);
+                    driveToPosition(1000,-1000,-1000,-1000,1);
                     driveToPosition(3000,3000,3000,3000,1);
+                    wait(500);
                     teamMarker.setPosition(0);
 
                 } else {
-                    driveToPosition(-2000,-2000,2000,2000,1);
+                    driveToPosition(-2200,-2200,2200,2200,1);
                     driveToPosition(5000,-5000,-5000,5000,1);
-                    driveToPosition(200,200,-200,-200,1);
+                    driveToPosition(1000,-1000,-1000,1000,1);
                     driveToPosition(-3000,-3000,-3000,-3000,1);
+                    wait(500);
                     teamMarker.setPosition(0);
 
 
 
                 }
+
             }
 
 
 
 
             detector.disable();
+            isRunning = false;
             stop();
+
         }
 
     }
