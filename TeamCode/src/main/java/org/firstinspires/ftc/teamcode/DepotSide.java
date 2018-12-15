@@ -67,6 +67,7 @@ public class DepotSide extends AlmondLinear
                     driveToPosition(1000,-1000,-1000,1000,1);
                     driveToPosition(5000,5000,5000,5000,1);
                     teamMarker.setPosition(0);
+                    wait(500);
                     driveToPosition(-2700,-2700,2700,2700,1);
                     driveToPosition(5000,5000,5000,5000,1);
 
@@ -76,7 +77,7 @@ public class DepotSide extends AlmondLinear
                     driveToPosition(2000,-2000,-2000,2000,1);
                     driveToPosition(-4000,-4000,-4000,-4000,1);
                     driveToPosition(10000,10000,10000,10000,1);
-                    teamMarker.setPosition(0);
+                   
 
 
 
