@@ -48,15 +48,15 @@ public class AutoCraterSide extends AlmondLinear
 
             if(detector.isFound()&&detector.getWidth()>40)
             {
-                driveToPosition(8000,-8000,-8000,8000,1); // Moves towards cube ( right )
+                driveToPosition(4000,-8000,-4000,4000,1); // Moves towards cube ( right )
             } else {
                 driveToPosition(1000,1000,-1000,-1000,1); // Moves clockwise
                 if(detector.isFound()&&detector.getWidth()>40)
                 {
-                    driveToPosition(5000,-5000,-5000,5000,1); // Moves towards cube ( right )
+                    driveToPosition(4500,-4500,-4500,4500,1); // Moves towards cube ( right )
                 } else {
                     driveToPosition(-2000,-2000,2000,2000,1); // Moves counterclockwise
-                    driveToPosition(5000,-5000,-5000,5000,1); // Moves towards cube ( right )
+                    driveToPosition(4500,-4500,-4500,4500,1); // Moves towards cube ( right )
                 }
             }
 
