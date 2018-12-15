@@ -44,8 +44,8 @@ public class DepotSide extends AlmondLinear
             sleep(11000);
             lScrew.setPower(0);
 
-            driveToPosition(1000,1000,1000,1000,1);
-            driveToPosition(300,-300,-300,300, 1);
+            driveToPosition(700,700,700,700,1);
+            driveToPosition(1000,-1000,-1000,1000, 1);
             driveToPosition(-1000,-1000,-1000,-1000,1);
 
             if(detector.isFound()&&detector.getWidth()>40)
