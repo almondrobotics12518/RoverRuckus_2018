@@ -18,7 +18,7 @@ public class DepotSide extends AlmondLinear
         GoldAlignDetector detector;
 
         hardwareMap();
-        teamMarker.setPosition(0);
+        teamMarker.setPosition(1);
         waitForStart();
         while (opModeIsActive() && isRunning)
         {
@@ -54,22 +54,28 @@ public class DepotSide extends AlmondLinear
                 driveToPosition(8000,-8000,-8000,8000,1);
                 driveToPosition(-1350,-1350,1350,1350,1);
                 teamMarker.setPosition(0);
+                driveToPosition(700,700,700,700,1);
+                driveToPosition(1000,-1000,-1000,1000,1);
+                driveToPosition(5000,5000,5000,5000,1);
+
             } else {
-                driveToPosition(1100,1100,-1100,-1100,1);
+                driveToPosition(1200,1200,-1200,-1200,1);
                 if(detector.isFound()&&detector.getWidth()>40)
                 {
                     driveToPosition(5000,-5000,-5000,5000,1);
                     driveToPosition(1000,-1000,-1000,-1000,1);
-                    driveToPosition(3000,3000,3000,3000,1);
-                    wait(500);
+                    driveToPosition(1000,-1000,-1000,1000,1);
+                    driveToPosition(5000,5000,5000,5000,1);
                     teamMarker.setPosition(0);
+                    driveToPosition(-2700,-2700,2700,2700,1);
+                    driveToPosition(5000,5000,5000,5000,1);
 
                 } else {
-                    driveToPosition(-2200,-2200,2200,2200,1);
+                    driveToPosition(-2400,-2400,2400,2400,1);
                     driveToPosition(5000,-5000,-5000,5000,1);
-                    driveToPosition(1000,-1000,-1000,1000,1);
-                    driveToPosition(-3000,-3000,-3000,-3000,1);
-                    wait(500);
+                    driveToPosition(2000,-2000,-2000,2000,1);
+                    driveToPosition(-4000,-4000,-4000,-4000,1);
+                    driveToPosition(10000,10000,10000,10000,1);
                     teamMarker.setPosition(0);
 
 
