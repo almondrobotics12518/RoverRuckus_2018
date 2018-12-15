@@ -38,6 +38,8 @@ public class GoldDetector extends DogeCVDetector {
     private boolean found    = false; // Is the gold mineral found
     private Point   screenPosition = new Point(); // Screen position of the mineral
     private Rect    foundRect = new Rect(); // Found rect
+    private double yPos;
+    private double width;
 
     public DogeCV.AreaScoringMethod areaScoringMethod = DogeCV.AreaScoringMethod.MAX_AREA; // Setting to decide to use MaxAreaScorer or PerfectAreaScorer
 
@@ -101,6 +103,8 @@ public class GoldDetector extends DogeCVDetector {
             Imgproc.putText(displayMat, "Chosen", bestRect.tl(),0,1,new Scalar(255,255,255));
 
             screenPosition = new Point(bestRect.x, bestRect.y);
+            yPos = bestRect.y;
+            width = bestRect.width;
             foundRect = bestRect;
             found = true;
         }else{
@@ -154,4 +158,8 @@ public class GoldDetector extends DogeCVDetector {
     public boolean isFound() {
         return found;
     }
+
+    public double getWidth() { return width; }
+    
+    public double getyPos() { return yPos; }
 }

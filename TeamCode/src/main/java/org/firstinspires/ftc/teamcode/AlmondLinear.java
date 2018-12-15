@@ -91,12 +91,12 @@ public abstract class AlmondLinear extends LinearOpMode
                 && leftBack.isBusy() && leftFront.isBusy()
                 && rightFront.isBusy() && rightBack.isBusy())
         {
-            if(Math.abs(leftFront.getCurrentPosition() - leftFront.getTargetPosition()) < 100 )
+            if(Math.abs(leftFront.getCurrentPosition() - leftFront.getTargetPosition()) < 200 )
             {
-                leftFront.setPower(power*0.2);
-                leftBack.setPower(power*0.2);
-                rightBack.setPower(power*0.2);
-                rightFront.setPower(power*0.2);
+                leftFront.setPower(power*0.4);
+                leftBack.setPower(power*0.4);
+                rightBack.setPower(power*0.4);
+                rightFront.setPower(power*0.4);
             }
         }
 
@@ -107,8 +107,19 @@ public abstract class AlmondLinear extends LinearOpMode
 
     }
 
+    public final mineralPosition scan(){
+        return mineralPosition.MIDDLE;
+    }
+
     public final void setModeAuto() { this.isAuto = true; }
 
     public final void setModeTeleOp() { this.isAuto = false; }
+
+    public enum mineralPosition {
+        LEFT,
+        RIGHT,
+        MIDDLE,
+        UNKNOWN,
+    }
 }
 
