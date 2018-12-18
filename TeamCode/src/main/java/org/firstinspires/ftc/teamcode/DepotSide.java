@@ -77,7 +77,7 @@ public class DepotSide extends AlmondLinear
                     driveToPosition(2000,-2000,-2000,2000,1);
                     driveToPosition(-4000,-4000,-4000,-4000,1);
                     driveToPosition(10000,10000,10000,10000,1);
-                   
+
 
 
 
