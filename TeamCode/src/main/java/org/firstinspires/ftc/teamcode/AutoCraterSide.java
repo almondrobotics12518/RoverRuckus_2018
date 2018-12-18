@@ -43,20 +43,35 @@ public class AutoCraterSide extends AlmondLinear
             lScrew.setPower(0);
 
             driveToPosition(700,700,700,700,1); // Moves forward
-            driveToPosition(1000,-1000,-1000,1000, 1); // Moves towards cube ( right )
-            driveToPosition(-1000,-1000,-1000,-1000,1); // Moves backward
+            driveToPosition(500,-500,-500,500, 1); // Moves towards cube ( right )
+            driveToPosition(-700,-700,-700,-700,1); // Moves backward
 
             if(detector.isFound()&&detector.getWidth()>40)
             {
+                telemetry.addData("Status","Pushing Middle Cube...");
+                telemetry.update();
                 driveToPosition(4000,-8000,-4000,4000,1); // Moves towards cube ( right )
+                driveToPosition(-2000,2000,2000,-2000,1);
+                driveToPosition(3000,3000,3000,3000,1);
+
             } else {
-                driveToPosition(1000,1000,-1000,-1000,1); // Moves clockwise
-                if(detector.isFound()&&detector.getWidth()>40)
+                driveToPosition(1200,1200,-1200,-1200,1); // Moves clockwise
+
+                if(detector.isFound() &&detector.getWidth()>40)
                 {
-                    driveToPosition(4500,-4500,-4500,4500,1); // Moves towards cube ( right )
+                    telemetry.addData("Status","Pushing Outtake Side Cube...");
+                    telemetry.update();
+                    driveToPosition(4300,-4300,-4300,4300,1); // Moves towards cube ( right )
+                    driveToPosition(-3500,3500,3500,-3500,1);
+                    driveToPosition(4000,4000,4000,4000,1);
+
+
                 } else {
+                    telemetry.addData("Status","Pushing Intake Side Cube...");
+                    telemetry.update();
                     driveToPosition(-2000,-2000,2000,2000,1); // Moves counterclockwise
-                    driveToPosition(4500,-4500,-4500,4500,1); // Moves towards cube ( right )
+                    driveToPosition(4000,-4000,-4000,4000,1); // Moves towards cube ( right )
+
                 }
             }
 
