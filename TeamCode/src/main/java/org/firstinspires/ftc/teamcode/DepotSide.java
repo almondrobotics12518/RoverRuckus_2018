@@ -40,11 +40,11 @@ public class DepotSide extends AlmondLinear
             detector.ratioScorer.perfectRatio = 1.0; // Ratio adjustment
 
             detector.enable(); // Start the detector!
-
+            /*
             lScrew.setPower(-1);
             sleep(11000);
             lScrew.setPower(0);
-
+            */
             driveToPosition(700,700,700,700,1);
             driveToPosition(1000,-1000,-1000,1000, 1);
             driveToPosition(-1000,-1000,-1000,-1000,1);

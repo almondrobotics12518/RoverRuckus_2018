@@ -57,7 +57,7 @@ public class LinearTeleOp extends LinearOpMode {
         boolean isRunning = true;
         while(isRunning && opModeIsActive()){
             leftX = -gamepad1.left_stick_x; // Reverse left joystick's X coordinate
-            leftY = gamepad1.left_stick_y; // Reverse left joystick's Y coordinate
+            leftY = -gamepad1.left_stick_y; // Reverse left joystick's Y coordinate
             rightX = -gamepad1.right_stick_x;
             double speed = Math.hypot(leftX, leftY); // Takes hypotenuse of leftX and leftY
             double angle = Math.atan2(leftY, leftX) - Math.PI / 4; // Calculates angle of direction
