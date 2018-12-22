@@ -95,11 +95,11 @@ public class LinearTeleOp extends LinearOpMode {
             telemetry.addData("Slide",slide.getCurrentPosition());
             telemetry.update();
 
-            idle();
+            /*idle();
             if (isStopRequested()) {
                 isRunning = false;
             }
-
+*/
         }
         leftFront.setPower(0);
         leftBack.setPower(0);
