@@ -11,10 +11,12 @@ public class AutoCraterSide extends AlmondLinear
 
     mineralPosition position;
 
+
     public void runOpMode() throws InterruptedException
     {
         GoldAlignDetector detector;
-
+        DataLogThread2 log;
+        log = new DataLogThread2("CraterLog",250,leftFront,leftBack,rightFront,rightBack,lScrew);
         hardwareMap();
         waitForStart();
         while (opModeIsActive() && isRunning)
@@ -77,7 +79,8 @@ public class AutoCraterSide extends AlmondLinear
 
             driveToPosition(1000,1000,-1000,-1000,1);
 
-
+            log.setIsRunning(false);
+            log.closeLogFile();
             detector.disable();
             isRunning = false;
             stop();
