@@ -93,6 +93,7 @@ public class LinearTeleOp extends LinearOpMode {
             telemetry.addData("Hang",lScrew.getCurrentPosition());
             telemetry.addData("Arm zeroPowerBehavior",arm.getZeroPowerBehavior());
             telemetry.addData("Slide",slide.getCurrentPosition());
+            telemetry.addData("lScrew",lScrew.getPower());
             telemetry.update();
 
             /*idle();
