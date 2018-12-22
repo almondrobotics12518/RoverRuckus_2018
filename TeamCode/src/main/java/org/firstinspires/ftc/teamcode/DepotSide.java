@@ -50,17 +50,12 @@ public class DepotSide extends AlmondLinear
                     wait(500);
                     driveToPosition(-2700,-2700,2700,2700,1);
                     driveToPosition(5000,5000,5000,5000,1);
-
                 } else {
                     driveToPosition(-2400,-2400,2400,2400,1);
                     driveToPosition(5000,-5000,-5000,5000,1);
                     driveToPosition(2000,-2000,-2000,2000,1);
                     driveToPosition(-4000,-4000,-4000,-4000,1);
                     driveToPosition(10000,10000,10000,10000,1);
-
-
-
-
                 }
 
             }

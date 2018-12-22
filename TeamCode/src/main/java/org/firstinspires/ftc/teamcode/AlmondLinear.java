@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.disnodeteam.dogecv.CameraViewDisplay;
 import com.disnodeteam.dogecv.DogeCV;
 import com.disnodeteam.dogecv.detectors.roverrukus.GoldAlignDetector;
+import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -11,6 +12,13 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 public abstract class AlmondLinear extends LinearOpMode
 {
+
+
+    // Gyro variable declaration
+
+    BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+
+    BNO055IMU imu;
 
 
     GoldAlignDetector detector;
@@ -61,6 +69,7 @@ public abstract class AlmondLinear extends LinearOpMode
         slide = hardwareMap.dcMotor.get("Slide");
         lScrew = hardwareMap.dcMotor.get("LScrew");
         teamMarker = hardwareMap.servo.get("tm");
+        imu = hardwareMap.get(BNO055IMU.class, "imu");
 
         if (isAuto)
         {
@@ -132,6 +141,29 @@ public abstract class AlmondLinear extends LinearOpMode
         detector.ratioScorer.perfectRatio = 1.0; // Ratio adjustment
 
         detector.enable(); // Start the detector!
+    }
+
+    public void initGyro()
+    {
+
+        parameters.mode                = BNO055IMU.SensorMode.IMU;
+        parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
+        parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        parameters.loggingEnabled      = false;
+
+        imu.initialize(parameters);
+        telemetry.addData("Status","Calibrating...");
+        telemetry.update();
+
+        while (!isStopRequested() && !imu.isGyroCalibrated())
+        {
+            sleep(50);
+            idle();
+        }
+
+
+        telemetry.addData("Status","Done calibrating. Waiting for start.");
+        telemetry.update();
     }
 
     public final mineralPosition scan(){
