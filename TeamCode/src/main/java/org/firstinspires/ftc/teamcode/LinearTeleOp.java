@@ -53,6 +53,7 @@ public class LinearTeleOp extends LinearOpMode {
         rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         lScrew.setMode(DcMotor.RunMode.RUN_USING_ENCODER);*/
 
+        // dont need isrunning
         waitForStart();
         boolean isRunning = true;
         while(isRunning && opModeIsActive()){
@@ -95,6 +96,7 @@ public class LinearTeleOp extends LinearOpMode {
             telemetry.addData("Slide",slide.getCurrentPosition());
             telemetry.update();
 
+            // dont need this
             idle();
             if (isStopRequested()) {
                 isRunning = false;

@@ -38,9 +38,9 @@ public class AutoCraterSide extends AlmondLinear
 
             detector.enable(); // Start the detector!
 
-            lScrew.setPower(-1); // Robot lowers
-            sleep(11000);
-            lScrew.setPower(0);
+            //lScrew.setPower(-1); // Robot lowers
+            //sleep(11000);
+            //lScrew.setPower(0);
 
             driveToPosition(700,700,700,700,1); // Moves forward
             driveToPosition(500,-500,-500,500, 1); // Moves towards cube ( right )
@@ -48,6 +48,7 @@ public class AutoCraterSide extends AlmondLinear
 
             if(detector.isFound()&&detector.getWidth()>40)
             {
+                detector.disable();
                 telemetry.addData("Status","Pushing Middle Cube...");
                 telemetry.update();
                 driveToPosition(4000,-8000,-4000,4000,1); // Moves towards cube ( right )
@@ -59,6 +60,7 @@ public class AutoCraterSide extends AlmondLinear
 
                 if(detector.isFound() &&detector.getWidth()>40)
                 {
+                    detector.disable();
                     telemetry.addData("Status","Pushing Outtake Side Cube...");
                     telemetry.update();
                     driveToPosition(4300,-4300,-4300,4300,1); // Moves towards cube ( right )
@@ -67,6 +69,7 @@ public class AutoCraterSide extends AlmondLinear
 
 
                 } else {
+                    detector.disable();
                     telemetry.addData("Status","Pushing Intake Side Cube...");
                     telemetry.update();
                     driveToPosition(-2000,-2000,2000,2000,1); // Moves counterclockwise
