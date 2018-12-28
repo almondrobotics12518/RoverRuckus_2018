@@ -176,6 +176,7 @@ public abstract class AlmondLinear extends LinearOpMode
         telemetry.update();
     }
 
+    public void turnToAngleRelative(float targetAngle,double power)
     public void turnToAngleAbsolute(float targetAngle,double power)
     {
         if (opModeIsActive())
@@ -190,6 +191,8 @@ public abstract class AlmondLinear extends LinearOpMode
                     leftBack.setPower(0);
                     rightFront.setPower(0);
                     rightBack.setPower(0);
+
+                    break;
                 }
                 if(Math.abs(currentAngle-targetAngle)<5)
                 {
