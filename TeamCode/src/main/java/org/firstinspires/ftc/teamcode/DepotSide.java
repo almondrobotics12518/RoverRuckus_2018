@@ -25,40 +25,39 @@ public class DepotSide extends AlmondLinear
             sleep(11000);
             lScrew.setPower(0);
             */
-            driveToPosition(700,700,700,700,1);
+            driveToPosition(500,500,500,500,1);
             driveToPosition(1000,-1000,-1000,1000, 1);
             driveToPosition(-1000,-1000,-1000,-1000,1);
 
             if(detector.isFound()&&detector.getWidth()>40)
             {
                 detector.disable();
+                //adjustment for the robot not strafing properly
+                driveToPosition(-500,-500,-500,-500,1);
+
                 driveToPosition(8000,-8000,-8000,8000,1);
-                driveToPosition(-1350,-1350,1350,1350,1);
+                driveToPosition(500,500,500,500,1);
                 teamMarker.setPosition(0);
-                driveToPosition(700,700,700,700,1);
-                driveToPosition(1000,-1000,-1000,1000,1);
-                driveToPosition(5000,5000,5000,5000,1);
+                sleep(500);
+                driveToPosition(-1350,-1350,1350,1350,1);
+                driveToPosition(-500,-500,-500,-500,1);
+                driveToPosition(1500,1500,1500,1500,1);
+                driveToPosition(500,-500,-500,500,1);
+                driveToPosition(7000,7000,7000,7000,1);
+
 
             } else {
-                driveToPosition(1200,1200,-1200,-1200,1);
+                driveToPosition(1300,1300,-1300,-1300,1);
                 if(detector.isFound()&&detector.getWidth()>40)
                 {
+                    driveToPosition(7000,-5000,-5000,5000,1);
+                    driveToPosition(150,150,-150,-150,1);
 
-                    driveToPosition(5000,-5000,-5000,5000,1);
-                    driveToPosition(1000,-1000,-1000,-1000,1);
-                    driveToPosition(1000,-1000,-1000,1000,1);
-                    driveToPosition(5000,5000,5000,5000,1);
-                    teamMarker.setPosition(0);
-                    wait(500);
-                    driveToPosition(-2700,-2700,2700,2700,1);
-                    driveToPosition(5000,5000,5000,5000,1);
                 } else {
                     detector.disable();
-                    driveToPosition(-2400,-2400,2400,2400,1);
+                    driveToPosition(-7000,-2600,2600,2600,1);
                     driveToPosition(5000,-5000,-5000,5000,1);
-                    driveToPosition(2000,-2000,-2000,2000,1);
-                    driveToPosition(-4000,-4000,-4000,-4000,1);
-                    driveToPosition(10000,10000,10000,10000,1);
+
 
                 }
 

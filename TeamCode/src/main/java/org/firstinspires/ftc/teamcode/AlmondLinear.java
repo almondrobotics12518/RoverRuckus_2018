@@ -177,12 +177,16 @@ public abstract class AlmondLinear extends LinearOpMode
     }
 
     public void turnToAngleRelative(float targetAngle,double power)
+    {
+        float target = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle + 180 + targetAngle;
+        turnToAngleAbsolute(target,power);
+    }
     public void turnToAngleAbsolute(float targetAngle,double power)
     {
         if (opModeIsActive())
         {
             float currentAngle = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle + 180;
-            while(opModeIsActive()&& currentAngle != targetAngle)
+            while(opModeIsActive() && currentAngle != targetAngle)
             {
                 currentAngle = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle + 180;
                 if(currentAngle > targetAngle - 0.5 || currentAngle < targetAngle +0.5)
@@ -191,21 +195,23 @@ public abstract class AlmondLinear extends LinearOpMode
                     leftBack.setPower(0);
                     rightFront.setPower(0);
                     rightBack.setPower(0);
-
+                    telemetry.addData("Status","Break");
+                    telemetry.update();
                     break;
                 }
                 if(Math.abs(currentAngle-targetAngle)<5)
                 {
                     power *= 0.3;
+
                 }
-                if ((targetAngle - currentAngle) % 360 < (currentAngle - targetAngle)%360)
+                if (((targetAngle - currentAngle) % 360) > ((currentAngle - targetAngle)%360))
                 {
                     leftFront.setPower(power);
                     leftBack.setPower(power);
                     rightFront.setPower(-power);
                     rightBack.setPower(-power);
                 }
-                if ((targetAngle - currentAngle) % 360 > (currentAngle - targetAngle)%360)
+                if ((targetAngle - currentAngle) % 360 < ((currentAngle - targetAngle) % 360))
                 {
                     leftFront.setPower(-power);
                     leftBack.setPower(-power);

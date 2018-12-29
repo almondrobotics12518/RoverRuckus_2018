@@ -58,15 +58,16 @@ public class AutoCraterSide extends AlmondLinear
                 driveToPosition(3000,3000,3000,3000,1);
 
             } else {
-                driveToPosition(1200,1200,-1200,-1200,1); // Moves clockwise
+                driveToPosition(1300,1300,-1300,-1300,1); // Moves clockwise
 
                 if(detector.isFound() &&detector.getWidth()>40)
                 {
                     detector.disable();
                     telemetry.addData("Status","Pushing Outtake Side Cube...");
                     telemetry.update();
-                    driveToPosition(4300,-4300,-4300,4300,1); // Moves towards cube ( right )
-                    driveToPosition(-3500,3500,3500,-3500,1);
+                    driveToPosition(4400,-4400,-4400,4400,1); // Moves towards cube ( right )
+                    driveToPosition(-3600,3600,3600,-3600,1);
+                    driveToPosition(-500,-500,500,500,1);
                     driveToPosition(4000,4000,4000,4000,1);
 
 
@@ -74,13 +75,15 @@ public class AutoCraterSide extends AlmondLinear
                     detector.disable();
                     telemetry.addData("Status","Pushing Intake Side Cube...");
                     telemetry.update();
-                    driveToPosition(-2000,-2000,2000,2000,1); // Moves counterclockwise
-                    driveToPosition(4000,-4000,-4000,4000,1); // Moves towards cube ( right )
+                    driveToPosition(-2200,-2200,2200,2200,1); // Moves counterclockwise
+                    driveToPosition(4000,-4000,-4000,4000,1); // Moves towards cube ( right// )
+                    driveToPosition(-900,900,900,-900,1);
+                    driveToPosition(1000,1000,1000,1000,1);
 
                 }
             }
 
-            driveToPosition(1000,1000,-1000,-1000,1);
+            driveToPosition(900,900,-900,-900,1);
 
             log.setIsRunning(false);
             log.closeLogFile();
