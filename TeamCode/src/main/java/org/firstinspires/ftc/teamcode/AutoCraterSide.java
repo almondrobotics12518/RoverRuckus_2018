@@ -46,16 +46,25 @@ public class AutoCraterSide extends AlmondLinear
 
             driveToPosition(700,700,700,700,1); // Moves forward
             driveToPosition(500,-500,-500,500, 1); // Moves towards cube ( right )
-            driveToPosition(-700,-700,-700,-700,1); // Moves backward
+            driveToPosition(-900,-900,-900,-900,1); // Moves backward
 
             if(detector.isFound()&&detector.getWidth()>40)
             {
                 detector.disable();
                 telemetry.addData("Status","Pushing Middle Cube...");
                 telemetry.update();
+                driveToPosition(-200,-200,-200,-200,1);
                 driveToPosition(4000,-8000,-4000,4000,1); // Moves towards cube ( right )
                 driveToPosition(-2000,2000,2000,-2000,1);
-                driveToPosition(3000,3000,3000,3000,1);
+                driveToPosition(7300,7300,7300,7300,1);
+                driveToPosition(-1300,-1300,1300,1300,1);
+                driveToPosition(4000,4000,4000,4000,1);
+                driveToPosition(-2700,-2700,2700,2700,1);
+                teamMarker.setPosition(0);
+                driveToPosition(-3200,-3000,3200,3200,1);
+                driveToPosition(10000,10000,10000,10000,1);
+
+
 
             } else {
                 driveToPosition(1300,1300,-1300,-1300,1); // Moves clockwise
@@ -65,10 +74,14 @@ public class AutoCraterSide extends AlmondLinear
                     detector.disable();
                     telemetry.addData("Status","Pushing Outtake Side Cube...");
                     telemetry.update();
-                    driveToPosition(4400,-4400,-4400,4400,1); // Moves towards cube ( right )
+                    driveToPosition(4600,-4600,-4600,4600,1); // Moves towards cube ( right )
                     driveToPosition(-3600,3600,3600,-3600,1);
-                    driveToPosition(-500,-500,500,500,1);
-                    driveToPosition(4000,4000,4000,4000,1);
+                    driveToPosition(-700,-700,700,700,1);
+                    driveToPosition(5500,5500,5500,5500,1);
+                    driveToPosition(3800,3800,-3800,-3800,1);
+                    driveToPosition(-8000,-8000,-8000,-8000,1);
+                    teamMarker.setPosition(0);
+                    driveToPosition(10000,10000,10000,10000,1);
 
 
                 } else {
@@ -83,7 +96,7 @@ public class AutoCraterSide extends AlmondLinear
                 }
             }
 
-            driveToPosition(900,900,-900,-900,1);
+
 
             log.setIsRunning(false);
             log.closeLogFile();
