@@ -46,8 +46,7 @@ public class DataLogThread2 extends Thread {
     public DataLogThread2(String fileName , long logTime, DcMotor fLD, DcMotor bLD, DcMotor fRD, DcMotor bRD,
                           DcMotor lScrew){
 
-        file = new File(Environment.getExternalStorageDirectory(), createUniqueFileName(fileName, ".txt") + "" );
-
+        file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/OpModeLogs", createUniqueFileName(fileName, ".txt") + "" );
         try {
             logFile = new PrintStream(new FileOutputStream(file));
         } catch (FileNotFoundException e) {

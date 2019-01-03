@@ -113,8 +113,8 @@ public abstract class AlmondLinear extends LinearOpMode
         rightFront.setPower(power);
 
         while(isRunning && opModeIsActive()
-                && leftBack.isBusy() && leftFront.isBusy()
-                && rightFront.isBusy() && rightBack.isBusy())
+                || leftBack.isBusy() || leftFront.isBusy()
+                || rightFront.isBusy() || rightBack.isBusy())
         {
             if(Math.abs(leftFront.getCurrentPosition() - leftFront.getTargetPosition()) < 200 )
             {
@@ -129,6 +129,8 @@ public abstract class AlmondLinear extends LinearOpMode
         leftBack.setPower(0);
         rightBack.setPower(0);
         rightFront.setPower(0);
+
+        sleep(25);
 
     }
     public final void detectorEnable()
