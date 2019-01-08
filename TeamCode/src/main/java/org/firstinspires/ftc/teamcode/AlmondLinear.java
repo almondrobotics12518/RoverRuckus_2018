@@ -116,13 +116,7 @@ public abstract class AlmondLinear extends LinearOpMode
                 || leftBack.isBusy() || leftFront.isBusy()
                 || rightFront.isBusy() || rightBack.isBusy())
         {
-            if(Math.abs(leftFront.getCurrentPosition() - leftFront.getTargetPosition()) < 200 )
-            {
-                leftFront.setPower(power*0.4);
-                leftBack.setPower(power*0.4);
-                rightBack.setPower(power*0.4);
-                rightFront.setPower(power*0.4);
-            }
+            
         }
 
         leftFront.setPower(0);
