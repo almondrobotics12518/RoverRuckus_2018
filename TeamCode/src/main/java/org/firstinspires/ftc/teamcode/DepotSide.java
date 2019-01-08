@@ -21,7 +21,12 @@ public class DepotSide extends AlmondLinear
         waitForStart();
         while (opModeIsActive() && isRunning)
         {
+            telemetry.addData("Status","In Start");
+            telemetry.update();
             detectorEnable();
+
+            log = new DataLogThread2("CraterSideAuto",250,leftFront,leftBack,rightFront,rightBack,lScrew);
+            
             /*
             lScrew.setPower(-1);
             sleep(11000);
@@ -79,7 +84,9 @@ public class DepotSide extends AlmondLinear
 
             }
 
-
+            log.setIsRunning(false);
+            log.closeLogFile();
+            log.interrupt();
 
             detector.disable();
             isRunning = false;
