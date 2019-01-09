@@ -112,19 +112,13 @@ public abstract class AlmondLinear extends LinearOpMode
         rightBack.setPower(power);
         rightFront.setPower(power);
 
-        while(isRunning && opModeIsActive()
-                || leftBack.isBusy() || leftFront.isBusy()
-                || rightFront.isBusy() || rightBack.isBusy())
+        while( opModeIsActive() &&
+                leftBack.isBusy() && leftFront.isBusy()
+                && rightFront.isBusy() && rightBack.isBusy())
         {
             
         }
 
-        leftFront.setPower(0);
-        leftBack.setPower(0);
-        rightBack.setPower(0);
-        rightFront.setPower(0);
-
-        sleep(25);
 
     }
     public final void detectorEnable()

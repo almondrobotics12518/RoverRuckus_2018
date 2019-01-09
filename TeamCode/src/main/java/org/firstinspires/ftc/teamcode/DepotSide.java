@@ -25,7 +25,7 @@ public class DepotSide extends AlmondLinear
             telemetry.update();
             detectorEnable();
 
-            log = new DataLogThread2("CraterSideAuto",250,leftFront,leftBack,rightFront,rightBack,lScrew);
+            //log = new DataLogThread2("CraterSideAuto",250,leftFront,leftBack,rightFront,rightBack,lScrew);
             
             /*
             lScrew.setPower(-1);
@@ -42,16 +42,14 @@ public class DepotSide extends AlmondLinear
                 //adjustment for the robot not strafing properly
                 driveToPosition(-500,-500,-500,-500,1);
 
-                driveToPosition(4000,-4000,-4000,4000,1);
-                driveToPosition(4000,-4000,-4000,4000,1);
-                driveToPosition(500,500,500,500,1);
+                driveToPosition(9000,-9000,-9000,9000,1);
+                driveToPosition(-1000,1000,1000,-1000,1);
+                driveToPosition(1000,1000,1000,1000,1);
                 teamMarker.setPosition(0);
                 sleep(500);
-                driveToPosition(-1500,-1500,1500,1500,1);
-                driveToPosition(-500,-500,-500,-500,1);
-                driveToPosition(1500,1500,1500,1500,1);
-                driveToPosition(500,-500,-500,500,1);
-                driveToPosition(7000,7000,7000,7000,1);
+                driveToPosition(2000,2000,2000,2000,1);
+                driveToPosition(-1350,-1350,1350,1350,1);
+                driveToPosition(5000,5000,5000,5000,1);
 
 
             } else {
@@ -83,11 +81,11 @@ public class DepotSide extends AlmondLinear
                 }
 
             }
-
+/*
             log.setIsRunning(false);
             log.closeLogFile();
             log.interrupt();
-
+*/
             detector.disable();
             isRunning = false;
             stop();

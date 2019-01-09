@@ -21,6 +21,7 @@ public class AutoCraterSide extends AlmondLinear
 
 
         hardwareMap();
+        teamMarker.setPosition(1);
         waitForStart();
         while (opModeIsActive() && isRunning)
         {
@@ -59,7 +60,7 @@ public class AutoCraterSide extends AlmondLinear
                 telemetry.addData("Status","Pushing Middle Cube...");
                 telemetry.update();
                 driveToPosition(-200,-200,-200,-200,1);
-                driveToPosition(4000,-8000,-4000,4000,1); // Moves towards cube ( right )
+                driveToPosition(4400,-4400,-4400,4400,1); // Moves towards cube ( right )
                 driveToPosition(-2000,2000,2000,-2000,1);
                 driveToPosition(7400,7400,7400,7400,1);
                 driveToPosition(-1300,-1300,1300,1300,1);
@@ -79,7 +80,8 @@ public class AutoCraterSide extends AlmondLinear
                     detector.disable();
                     telemetry.addData("Status","Pushing Outtake Side Cube...");
                     telemetry.update();
-                    driveToPosition(4800,-4800,-4800,4800,1); // Moves towards cube ( right )
+
+                    driveToPosition(5200,-5200,-5200,5200,1); // Moves towards cube ( right )
                     driveToPosition(-3700,3700,3700,-3700,1);
                     driveToPosition(-700,-700,700,700,1);
                     driveToPosition(6600,6600,6600,6600,1);
@@ -95,10 +97,16 @@ public class AutoCraterSide extends AlmondLinear
                     telemetry.addData("Status","Pushing Intake Side Cube...");
                     telemetry.update();
                     driveToPosition(-2200,-2200,2200,2200,1); // Moves counterclockwise
-                    driveToPosition(4000,-4000,-4000,4000,1); // Moves towards cube ( right// )
-                    driveToPosition(-900,900,900,-900,1);
-                    driveToPosition(1000,1000,1000,1000,1);
-
+                    driveToPosition(5500,-5500,-5500,5500,1); // Moves towards cube ( right// )
+                    driveToPosition(-1900,1900,1900,-1900,1);
+                    driveToPosition(500,500,-500,-500,1);
+                    driveToPosition(6000,6000,6000,6000,1);
+                    driveToPosition(-700,-700,700,700,1);
+                    driveToPosition(2000,2000,2000,2000,1);
+                    driveToPosition(-2700,-2700,2700,2700,1);
+                    teamMarker.setPosition(0);
+                    driveToPosition(-3200,-3000,3200,3200,1);
+                    driveToPosition(10000,10000,10000,10000,1);
                 }
             }
 
