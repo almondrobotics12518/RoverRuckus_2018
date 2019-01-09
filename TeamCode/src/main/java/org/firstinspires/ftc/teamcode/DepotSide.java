@@ -17,7 +17,7 @@ public class DepotSide extends AlmondLinear
 
         hardwareMap();
 
-        teamMarker.setPosition(1);
+        teamMarker.setPosition(0.6);
         waitForStart();
         while (opModeIsActive() && isRunning)
         {
@@ -36,7 +36,7 @@ public class DepotSide extends AlmondLinear
             driveToPosition(1000,-1000,-1000,1000, 1);
             driveToPosition(-1000,-1000,-1000,-1000,1);
 
-            if(detector.isFound()&&detector.getWidth()>40)
+            if(detector.isFound()&&detector.getWidth()>40&&detector.getXPosition()<500&&detector.getXPosition()>100)
             {
                 detector.disable();
                 //adjustment for the robot not strafing properly
@@ -53,29 +53,37 @@ public class DepotSide extends AlmondLinear
 
 
             } else {
-                driveToPosition(1300,1300,-1300,-1300,1);
+                driveToPosition(-1300,-1300,1300,1300,0.5);
+                driveToPosition(-1200,-1200,-1200,-1200,1);
                 if(detector.isFound()&&detector.getWidth()>40)
                 {
-                    driveToPosition(5000,-5000,-5000,5000,1);
-                    driveToPosition(150,150,-150,-150,1);
+                    detector.disable();
+
+                    driveToPosition(7500,-7500,-7500,7500,1);
+                    driveToPosition(-1000,1000,1000,-1000,1);
+                    driveToPosition(-3000,-3000,-3000,-3000,1);
+                    teamMarker.setPosition(0);
+                    sleep(400);
+                    driveToPosition(6000,6000,6000,6000,1);
+                    driveToPosition(1300,-1300,-1300,1300,1);
+                    driveToPosition(3000,3000,3000,3000,1);
+
+
 
                 } else {
                     detector.disable();
-                    driveToPosition(3200,3200,3200,3200,1);
-                    driveToPosition(-500,-500,-500,-500,1);
-                    driveToPosition(-1000,1000,1000,-1000,1);
-                    driveToPosition(3000,3000,3000,3000,1);
-                    driveToPosition(-2700,-2700,2700,2700,1);
-                    driveToPosition(700,-700,-700,700,1);
-                    driveToPosition(-4500,-4500,-4500,-4500,1);
-                    driveToPosition(-1000,1000,1000,-1000,1);
-                    driveToPosition(1350,1350,-1350,-1350,1);
-                    teamMarker.setPosition(0);
-                    sleep(500);
-                    driveToPosition(-1350,-1350,1350,1350,1);
-                    driveToPosition(1000,1000,1000,1000,1);
+                    driveToPosition(-200,-200,200,200,0.2);
                     driveToPosition(1000,-1000,-1000,1000,1);
-                    driveToPosition(6000,6000,6000,6000,1);
+                    driveToPosition(-2400,-2400,-2400,-2400,1);
+                    driveToPosition(500,500,500,500,0.5);
+                    driveToPosition(-1000,1000,1000,-1000,1);
+                    driveToPosition(-3000,-3000,-3000,-3000,1);
+                    driveToPosition(7000,-7000,-7000,7000,1);
+                    teamMarker.setPosition(0);
+                    sleep(400);
+                    driveToPosition(2000,2000,2000,2000,1);
+                    driveToPosition(1500,-1500,-1500,1500,1);
+                    driveToPosition(8000,8000,8000,8000,1);
 
 
                 }
