@@ -21,49 +21,49 @@ public abstract class AlmondLinear extends LinearOpMode
 
     // Gyro variable declaration
 
-    BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+    public BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
 
-    BNO055IMU imu;
+    public BNO055IMU imu;
 
-    Orientation currentAngles = new Orientation();
-    Orientation lastAngles = new Orientation();
+    public Orientation currentAngles = new Orientation();
+    public Orientation lastAngles = new Orientation();
 
     //dogecv detect declaration
 
 
-    GoldAlignDetector detector;
+    public GoldAlignDetector detector;
 
     /*  -------------------------
         Declare drivetrain motors
         ------------------------- */
 
-    DcMotor leftFront;
-    DcMotor  rightFront;
-    DcMotor leftBack;
-    DcMotor rightBack;
+    public DcMotor leftFront;
+    public DcMotor  rightFront;
+    public DcMotor leftBack;
+    public DcMotor rightBack;
 
     /*  -------------------------------------------
         Declare scoring mechanism servos and motors.
         ------------------------------------------- */
 
-    DcMotor arm;
-    DcMotor slide;
-    CRServo intake;
+    public DcMotor arm;
+    public DcMotor slide;
+    public CRServo intake;
 
     /* -------------------------------------
         Declare hanging lead screw motor.
        ------------------------------------- */
 
-    DcMotor lScrew;
+    public DcMotor lScrew;
 
     /*  -------------------------
         Declare team Marker servo.
         ------------------------- */
 
-    Servo teamMarker;
+    public Servo teamMarker;
 
-    boolean isRunning = true;
-    boolean isAuto = true;
+    public boolean isRunning = true;
+    public boolean isAuto = true;
     /*
     This method sets all hardwareMaps for hardware devices
      */

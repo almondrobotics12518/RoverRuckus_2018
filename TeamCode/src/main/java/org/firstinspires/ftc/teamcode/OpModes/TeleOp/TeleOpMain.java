@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.OpModes.TeleOp;
 
 import com.disnodeteam.dogecv.detectors.roverrukus.GoldAlignDetector;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -8,8 +8,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 
-@TeleOp(name="LinearTeleOp",group="yeet")
-public class LinearTeleOp extends LinearOpMode {
+@TeleOp(name="LinearTeleOp",group="opmodes")
+public class TeleOpMain extends LinearOpMode {
 
     private DcMotor lScrew;
     private DcMotor leftFront;
