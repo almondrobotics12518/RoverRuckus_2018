@@ -92,6 +92,12 @@ public abstract class AlmondLinear extends LinearOpMode
             rightBack.setDirection(DcMotorSimple.Direction.REVERSE);
         }
     }
+
+    /*
+    The setPower() method sets power to all motors. This is for quality of life to
+    motor powers more easily.
+    It takes 4 doubles for each of the 4 drivetrain powers.
+     */
     public void setPower(double lf, double lb, double rf, double rb)
     {
         leftFront.setPower(lf);
@@ -99,6 +105,9 @@ public abstract class AlmondLinear extends LinearOpMode
         rightFront.setPower(rf);
         rightBack.setPower(rb);
     }
+    /*
+    This method sets all the motors to have the same power based on direction that the robot moves.
+     */
     public void setPowerDirection(double power, Direction direction)
     {
         switch(direction)
@@ -117,12 +126,15 @@ public abstract class AlmondLinear extends LinearOpMode
                 break;
         }
     }
+    //This enum is used by setPowerDirection() to select a direction.
     public enum Direction{
         FORWARD,
         BACK,
         LEFT,
         RIGHT
     }
+    //This method is incomplete and contains a custom move to position that takes similar input to
+    //driveToPosition().
     public void encoderDrive(int target, double power, Direction direction)
     {
         leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -146,7 +158,8 @@ public abstract class AlmondLinear extends LinearOpMode
         setPower(0,0,0,0);
     }
     /*
-    This  method is used for moving using encoder values
+    This  method is used for moving using encoder values. It takes 4 encoder values for the 4
+    drivetrain motors and moves to target position. It also takes a power value of
      */
     final public void driveToPosition(int lf, int lb, int rf,int rb, double power)
     {
@@ -284,13 +297,14 @@ public abstract class AlmondLinear extends LinearOpMode
 
     public final void setModeTeleOp() { this.isAuto = false; }
 
+    //Unused enum for position of mineral in sampling.
     public enum mineralPosition {
         LEFT,
         RIGHT,
         MIDDLE,
         UNKNOWN,
     }
-
+    //This method resets all encoders that are used.
     public void resetEncoders(){
         leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
