@@ -31,7 +31,9 @@ public class DepotSideMain extends AlmondLinear
 
             log.start();
 
-
+            lScrew.setPower(-1);
+            sleep(5500);
+            lScrew.setPower(0);
 
 
             driveToPosition(500,500,500,500,1);
