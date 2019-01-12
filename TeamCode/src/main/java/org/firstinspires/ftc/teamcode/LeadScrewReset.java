@@ -3,15 +3,16 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-@Autonomous
-public class LeadScrewReset extends LinearOpMode {
+@Autonomous(name="ResetLeadScrew",group="test")
+public class LeadScrewReset extends AlmondLinear {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        DcMotor lScrew;
-        lScrew = hardwareMap.dcMotor.get("LScrew");
+        hardwareMap();
         waitForStart();
+        lScrew.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         lScrew.setPower(1);
-        sleep(11500);
+        sleep(10000);
+
     }
 }

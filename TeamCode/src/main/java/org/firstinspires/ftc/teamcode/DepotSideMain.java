@@ -20,7 +20,7 @@ public class DepotSideMain extends AlmondLinear
 
         hardwareMap();
         log = new DataLogThread2("DepotSideAuto",250,leftFront,leftBack,rightFront,rightBack,lScrew);
-        log.start();
+
         teamMarker.setPosition(0.6);
         waitForStart();
         while (opModeIsActive() && isRunning)
@@ -29,13 +29,11 @@ public class DepotSideMain extends AlmondLinear
             telemetry.update();
             detectorEnable();
 
+            log.start();
 
 
-            /*
-            lScrew.setPower(-1);
-            sleep(11000);
-            lScrew.setPower(0);
-            */
+
+
             driveToPosition(500,500,500,500,1);
             driveToPosition(1000,-1000,-1000,1000, 1);
             driveToPosition(-1000,-1000,-1000,-1000,1);

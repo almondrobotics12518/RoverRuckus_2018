@@ -15,6 +15,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
+import static org.firstinspires.ftc.teamcode.AlmondLinear.Direction.FORWARD;
+
 public abstract class AlmondLinear extends LinearOpMode
 {
 
@@ -90,13 +92,65 @@ public abstract class AlmondLinear extends LinearOpMode
             rightBack.setDirection(DcMotorSimple.Direction.REVERSE);
         }
     }
+    public void setPower(double lf, double lb, double rf, double rb)
+    {
+        leftFront.setPower(lf);
+        leftBack.setPower(lb);
+        rightFront.setPower(rf);
+        rightBack.setPower(rb);
+    }
+    public void setPowerDirection(double power, Direction direction)
+    {
+        switch(direction)
+        {
+            case FORWARD:
+                setPower(power,power,power,power);
+                break;
+            case BACK:
+                setPower(-power,-power,-power,-power);
+                break;
+            case LEFT:
+                setPower(-power,power,power,-power);
+                break;
+            case RIGHT:
+                setPower(power,-power,-power,power);
+                break;
+        }
+    }
+    public enum Direction{
+        FORWARD,
+        BACK,
+        LEFT,
+        RIGHT
+    }
+    public void encoderDrive(int target, double power, Direction direction)
+    {
+        leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
+        int startPosition = leftFront.getCurrentPosition();
+        int targetPosition = leftFront.getCurrentPosition()+target;
 
+        setPowerDirection(power,direction);
+        while(!(Math.abs(targetPosition-leftFront.getCurrentPosition())<50))
+        {
+            if(Math.abs(targetPosition-leftFront.getCurrentPosition())<1000)
+            {
+                power = Math.abs(targetPosition-leftFront.getCurrentPosition())/1000;
+                setPowerDirection(power,direction);
+            }
+
+        }
+        setPower(0,0,0,0);
+    }
     /*
     This  method is used for moving using encoder values
      */
     final public void driveToPosition(int lf, int lb, int rf,int rb, double power)
     {
+        int targetPosition = lf + leftFront.getCurrentPosition();
         leftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         leftBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -116,8 +170,22 @@ public abstract class AlmondLinear extends LinearOpMode
                 leftBack.isBusy() && leftFront.isBusy()
                 && rightFront.isBusy() && rightBack.isBusy())
         {
-            
+            /*
+            if (Math.abs(leftFront.getCurrentPosition()-targetPosition)<1000){
+                power = Math.abs(leftFront.getCurrentPosition()-targetPosition)/1000;
+                if (power<0.05){
+                    power = 0.05;
+                }
+
+            }
+            leftFront.setPower(power);
+            leftBack.setPower(power);
+            rightBack.setPower(power);
+            rightFront.setPower(power);
+            */
         }
+        power = 0;
+
 
 
     }
@@ -221,6 +289,15 @@ public abstract class AlmondLinear extends LinearOpMode
         RIGHT,
         MIDDLE,
         UNKNOWN,
+    }
+
+    public void resetEncoders(){
+        leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        lScrew.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
     }
 }
 

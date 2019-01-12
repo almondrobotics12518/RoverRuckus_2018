@@ -24,12 +24,13 @@ public class CraterSideMain extends AlmondLinear
 
 
         hardwareMap();
+        log = new DataLogThread2("DepotSideAuto",250,leftFront,leftBack,rightFront,rightBack,lScrew);
         teamMarker.setPosition(1);
         waitForStart();
         while (opModeIsActive() && isRunning)
         {
 
-
+            log.start();
             // Set up detector
             detector = new GoldAlignDetector(); // Create detector
             detector.init(hardwareMap.appContext, CameraViewDisplay.getInstance()); // Initialize it with the app context and camera
@@ -113,8 +114,8 @@ public class CraterSideMain extends AlmondLinear
                 }
             }
 
-
-
+            log.setIsRunning(false);
+            log.closeLogFile();
             detector.disable();
             isRunning = false;
             stop();
