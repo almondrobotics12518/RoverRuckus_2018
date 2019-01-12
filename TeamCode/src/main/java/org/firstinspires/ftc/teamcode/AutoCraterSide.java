@@ -47,9 +47,9 @@ public class AutoCraterSide extends AlmondLinear
 
             detector.enable(); // Start the detector!
 
-            //lScrew.setPower(-1); // Robot lowers
-            //sleep(11000);
-            //lScrew.setPower(0);
+            lScrew.setPower(-1); // Robot lowers
+            sleep(5500); // Lowers for five seconds
+            lScrew.setPower(0); // lScrew stops
 
             driveToPosition(700,700,700,700,1); // Moves forward
             driveToPosition(500,-500,-500,500, 1); // Moves towards cube ( right )
@@ -57,11 +57,12 @@ public class AutoCraterSide extends AlmondLinear
 
             if(detector.isFound()&&detector.getWidth()>40)
             {
+                // True if gold mineral in the middle
                 detector.disable();
                 telemetry.addData("Status","Pushing Middle Cube...");
                 telemetry.update();
                 driveToPosition(-200,-200,-200,-200,1);
-                driveToPosition(4400,-4400,-4400,4400,1); // Moves towards cube ( right )
+                driveToPosition(4400,-4400,-4400,4400,1);
                 driveToPosition(-2000,2000,2000,-2000,1);
                 driveToPosition(7400,7400,7400,7400,1);
                 driveToPosition(-1300,-1300,1300,1300,1);
@@ -78,6 +79,7 @@ public class AutoCraterSide extends AlmondLinear
 
                 if(detector.isFound() &&detector.getWidth()>40)
                 {
+                    // True if gold mineral is on the Outtake Side
                     detector.disable();
                     telemetry.addData("Status","Pushing Outtake Side Cube...");
                     telemetry.update();
@@ -94,6 +96,7 @@ public class AutoCraterSide extends AlmondLinear
 
 
                 } else {
+                    // True if gold mineral on the intake side
                     detector.disable();
                     telemetry.addData("Status","Pushing Intake Side Cube...");
                     telemetry.update();
@@ -111,11 +114,11 @@ public class AutoCraterSide extends AlmondLinear
                 }
             }
 
-            log.setIsRunning(false);
-            log.closeLogFile();
+            log.setIsRunning(false); //  ends logging
+            log.closeLogFile(); // close logs
 
-            detector.disable();
-            isRunning = false;
+            detector.disable(); // disables detector
+            isRunning = false; // ends while loop
             stop();
         }
 
