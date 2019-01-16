@@ -21,6 +21,12 @@ public abstract class AlmondLinear extends LinearOpMode
 {
 
 
+    public int lfEnc = 0;
+    public int lbEnc = 0;
+    public int rbEnc = 0;
+    public int rfEnc = 0;
+
+
     public static final int TICKS_PER_REVOLUTION = 1120;
     public static final int WHEEL_DIAMETER_IN_INCHES = 4;
     public static final double TICKS_PER_INCH =TICKS_PER_REVOLUTION/(Math.PI*WHEEL_DIAMETER_IN_INCHES);
@@ -141,6 +147,12 @@ public abstract class AlmondLinear extends LinearOpMode
                 break;
         }
     }
+    public void updateEncoders(){
+        lfEnc = leftFront.getCurrentPosition();
+        lbEnc = leftBack.getCurrentPosition();
+        rfEnc = rightFront.getCurrentPosition();
+        rbEnc = rightBack.getCurrentPosition();
+    }
     //This enum is used by setPowerDirection() to select a direction.
     public enum Direction{
         FORWARD,
@@ -219,6 +231,7 @@ public abstract class AlmondLinear extends LinearOpMode
         leftFront.setPower(1);
         while(opModeIsActive() && leftFront.getCurrentPosition()<targetLf){
             power = (leftFront.getCurrentPosition()-startLf)/1000;
+            if (power<0){power *= -1; }
             if (power>1){ power = 1; }
             leftFront.setPower(power);
             sleep(20);
@@ -242,8 +255,6 @@ public abstract class AlmondLinear extends LinearOpMode
         rightFront.setTargetPosition(rf + rightFront.getCurrentPosition());
         rightBack.setTargetPosition(rb + rightBack.getCurrentPosition());
 
-        sleep(1000);
-
         while (opModeIsActive() &&
                 leftBack.isBusy() && leftFront.isBusy()
                 && rightFront.isBusy() && rightBack.isBusy())
@@ -258,10 +269,22 @@ public abstract class AlmondLinear extends LinearOpMode
 
         }
     }
-    public void driveForwardDistance(double inches){
-        int targetPosition = (int)(inches*TICKS_PER_INCH);
-        driveToPosition(targetPosition,targetPosition,targetPosition,targetPosition,1);
+
+
+    public void driveLeftMotor(int target){
+        int tarLf = lfEnc + target;
+        int errorLf = tarLf - leftFront.getCurrentPosition();
+
+        while(errorLf>5 && opModeIsActive()){
+            leftFront.setPower(1);
+        }
+        while(errorLf<5 && opModeIsActive()){
+            leftFront.setPower(-1);
+        }
+        leftFront.setPower(0);
     }
+
+
     public final void detectorEnable()
     {
         // Set up detector
