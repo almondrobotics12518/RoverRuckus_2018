@@ -102,7 +102,7 @@ public abstract class AlmondLinear extends LinearOpMode
     }
 
     /*
-    The setPower() method sets power to all motors. This is for quality of life to
+    The setPower() method sets power to all motors. This is for quality of life to set
     motor powers more easily.
     It takes 4 doubles for each of the 4 drivetrain powers.
      */
@@ -115,7 +115,10 @@ public abstract class AlmondLinear extends LinearOpMode
     }
 
     public void setPowerAll(double power){
-        setPower(power,power,power,power);
+        leftFront.setPower(power);
+        leftBack.setPower(power);
+        rightFront.setPower(power);
+        rightBack.setPower(power);
     }
     /*
     This method sets all the motors to have the same power based on direction that the robot moves.
@@ -210,10 +213,14 @@ public abstract class AlmondLinear extends LinearOpMode
 
     public void encoderDrive(int lf){
         setModeRunUsingEncoders();
-
+        double power = 0;
+        int startLf = leftFront.getCurrentPosition();
+        int targetLf = leftFront.getCurrentPosition()+lf;
         leftFront.setPower(1);
-        while(opModeIsActive() && leftFront.getCurrentPosition()<1){
-
+        while(opModeIsActive() && leftFront.getCurrentPosition()<targetLf){
+            power = (leftFront.getCurrentPosition()-startLf)/1000;
+            if (power>1){ power = 1; }
+            leftFront.setPower(power);
             sleep(20);
         }
         leftFront.setPower(0);
