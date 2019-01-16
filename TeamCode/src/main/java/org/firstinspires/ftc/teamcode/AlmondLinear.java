@@ -85,9 +85,7 @@ public abstract class AlmondLinear extends LinearOpMode
         leftBack = hardwareMap.dcMotor.get("LeftBack");
         rightFront = hardwareMap.dcMotor.get("RightFront");
         rightBack = hardwareMap.dcMotor.get("RightBack");
-        arm = hardwareMap.dcMotor.get("Arm");
         intake = hardwareMap.crservo.get("intake");
-        slide = hardwareMap.dcMotor.get("Slide");
         lScrew = hardwareMap.dcMotor.get("LScrew");
         teamMarker = hardwareMap.servo.get("tm");
         imu = hardwareMap.get(BNO055IMU.class, "imu");
@@ -176,67 +174,133 @@ public abstract class AlmondLinear extends LinearOpMode
         }
     }
 
-    public void PIDdriveToPosition(double target, double kp, double ki, double kd){
-        double integralZone = 500;
-        double power = 0;
-        boolean isMoving = true;
-        double targetPosition = 0;
-        double error = 0;
-        double proportion = 0;
-        double integral = 0;
-        double derivative = 0;
-        double errorT = 0;
-        double lastError = 0;
-        while(opModeIsActive()&&isMoving) {
-            targetPosition = leftFront.getCurrentPosition() + target;
-            error = targetPosition - leftFront.getCurrentPosition();
-
-            if (error < integralZone && error != 0) {
-                errorT += error;
-            } else {
-                errorT = 0;
-            }
-            if (errorT > 50 / ki) {
-                errorT = 50 / ki;
-            }
-            if (error == 0) {
-                integral = 0;
-            }
-
-
-            proportion = error * kp;
-            integral = errorT * ki;
-            derivative = (error - lastError)*kd;
-
-            power = proportion + integral + derivative;
-            if(power>1){
-                power = 1;
-            }
-            setPowerAll(power);
-            if(power ==0){
-                isMoving = false;
-            }
-
-            sleep(20);
-
-
-        }
-    }
-
-    public void encoderDrive(int lf){
+    public void encoderDrive(int lf,int lb, int rf, int rb, double maxPower){
         setModeRunUsingEncoders();
-        double power = 0;
-        int startLf = leftFront.getCurrentPosition();
+        double kp = 0.003;
+        double ki = 0.000005;
+        double kd = 0.0015;
+        int integralZone = 200;
+
+        int errorLf;
+        int errorLb;
+        int errorRf;
+        int errorRb;
+
+        int errorTLf=0;
+        int errorTLb=0;
+        int errorTRf=0;
+        int errorTRb=0;
+
+        int lastErrorLf=0;
+        int lastErrorLb=0;
+        int lastErrorRf=0;
+        int lastErrorRb=0;
+
+        double derivativeLf;
+        double derivativeLb;
+        double derivativeRf;
+        double derivativeRb;
+
+        double integralLf;
+        double integralRf;
+        double integralLb;
+        double integralRb;
+
+        double proportionLf;
+        double proportionLb;
+        double proportionRf;
+        double proportionRb;
+
+        double powerLf;
+        double powerLb;
+        double powerRf;
+        double powerRb;
+
+        int startPosLf = leftFront.getCurrentPosition();
+        double startPower = 0;
+
         int targetLf = leftFront.getCurrentPosition()+lf;
-        leftFront.setPower(1);
-        while(opModeIsActive() && leftFront.getCurrentPosition()<targetLf){
-            power = (leftFront.getCurrentPosition()-startLf)/1000;
-            if (power<0){power *= -1; }
-            if (power>1){ power = 1; }
-            leftFront.setPower(power);
-            sleep(20);
+        int targetLb = leftBack.getCurrentPosition()+lb;
+        int targetRf = rightFront.getCurrentPosition()+rf;
+        int targetRb = rightBack.getCurrentPosition()+rb;
+
+        while(opModeIsActive() &&
+                Math.abs(leftFront.getCurrentPosition()-targetLf)>10||
+                Math.abs(rightFront.getCurrentPosition()-targetRf)>10 ||
+                Math.abs(leftBack.getCurrentPosition()-targetLb)>10 ||
+                Math.abs(rightBack.getCurrentPosition()-targetRb)>10)
+        {
+            errorLf = targetLf-leftFront.getCurrentPosition();
+            errorLb = targetLb-leftBack.getCurrentPosition();
+            errorRf = targetRf-rightFront.getCurrentPosition();
+            errorRb = targetRb-rightBack.getCurrentPosition();
+
+            if(Math.abs(errorLf)<integralZone){
+                errorTLf += errorLf;
+                errorTLb += errorLb;
+                errorTRf += errorRf;
+                errorTRb += errorRb;
+            } else {
+                errorTLb = 0;
+                errorTLf = 0;
+                errorTRf = 0;
+                errorTRb = 0;
+            }
+
+            proportionLf = errorLf * kp;
+            proportionLb = errorLb * kp;
+            proportionRb = errorRb * kp;
+            proportionRf = errorRf * kp;
+
+            integralLf = errorTLf * ki;
+            integralLb = errorTLb * ki;
+            integralRf = errorTRf * ki;
+            integralRb = errorTRb * ki;
+
+            derivativeLf= -( errorLf - lastErrorLf ) * kd;
+            derivativeLb= -( errorLb - lastErrorLb ) * kd;
+            derivativeRf= -( errorRf - lastErrorRf ) * kd;
+            derivativeRb= -( errorRb - lastErrorRb ) * kd;
+
+
+            if(Math.abs(errorLf)<5){ derivativeLf = 0; integralLf = 0; }
+            if(Math.abs(errorLb)<5){ derivativeLb = 0; integralLb = 0; }
+            if(Math.abs(errorRf)<5){ derivativeRf = 0; integralRf = 0; }
+            if(Math.abs(errorRb)<5){ derivativeRb = 0; integralRb = 0; }
+
+            if(Math.abs(integralLf)>0.07){ integralLf=(integralLf/Math.abs(integralLf)) * 0.07; }
+            if(Math.abs(integralLb)>0.07){ integralLb=(integralLb/Math.abs(integralLb)) * 0.07; }
+            if(Math.abs(integralRf)>0.07){ integralRf=(integralRf/Math.abs(integralRf)) * 0.07; }
+            if(Math.abs(integralRb)>0.07){ integralRb=(integralRb/Math.abs(integralRb)) * 0.07; }
+
+            powerLf = proportionLf + integralLf + derivativeLf;
+            powerLb = proportionLb + integralLb + derivativeLb;
+            powerRf = proportionRf + derivativeRf + integralRf;
+            powerRb = proportionRb + integralRb + derivativeRb;
+
+            if(Math.abs(powerLf)>1){powerLf/=Math.abs(powerLf);}
+            if(Math.abs(powerLf)<0.05){if(powerLf<0){powerLf-=0.05;}else{powerLf+=0.05;}}
+
+            if(Math.abs(powerLb)>1){powerLb/=Math.abs(powerLb);}
+            if(Math.abs(powerLb)<0.05){if(powerLb<0){powerLb-=0.05;}else{powerLb+=0.05;}}
+
+            if(Math.abs(powerRf)>1){powerRf/=Math.abs(powerRf);}
+            if(Math.abs(powerRf)<0.05){if(powerRf<0){powerRf-=0.05;}else{powerRf+=0.05;}}
+
+            if(Math.abs(powerRb)>1){powerRb/=Math.abs(powerRb);}
+            if(Math.abs(powerRb)<0.05){if(powerRb<0){powerRb-=0.05;}else{powerRb+=0.05;}}
+
+            setPower(powerLf,powerLb,powerRf,powerRb);
+
+            telemetry.addData("Proportion",proportionLf);
+            telemetry.addData("Encoder",leftFront.getCurrentPosition());
+            telemetry.addData("Target",targetLf);
+            telemetry.addData("Power",leftFront.getPower());
+            telemetry.addData("error",errorLf);
+            telemetry.update();
         }
-        leftFront.setPower(0);
+        setPowerAll(0);
+
     }
 
     /*

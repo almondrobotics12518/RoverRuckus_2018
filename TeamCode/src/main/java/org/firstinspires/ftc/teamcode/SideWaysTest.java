@@ -7,9 +7,11 @@ public class SideWaysTest extends AlmondLinear {
 
     public void runOpMode() throws InterruptedException
     {
+
         hardwareMap();
-        driveLeftMotor(1000);
-        encoderDrive(1000);
+        setModeRunUsingEncoders();
+        waitForStart();
+        encoderDrive(1000,1000,1000,1000,1);
         requestOpModeStop();
     }
 }
