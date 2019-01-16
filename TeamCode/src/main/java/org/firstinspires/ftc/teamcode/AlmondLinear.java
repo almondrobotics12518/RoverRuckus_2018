@@ -21,14 +21,17 @@ public abstract class AlmondLinear extends LinearOpMode
 {
 
 
+    public static final int TICKS_PER_REVOLUTION = 1120;
+    public static final int WHEEL_DIAMETER_IN_INCHES = 4;
+    public static final double TICKS_PER_INCH =TICKS_PER_REVOLUTION/(Math.PI*WHEEL_DIAMETER_IN_INCHES);
+    public static final double TICKS_IN_INCH_EMPIRICAL = 0;
+    public float currentAngle;
+    public float lastAngle;
     // Gyro variable declaration
 
     public BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
 
     public BNO055IMU imu;
-
-    public Orientation currentAngles = new Orientation();
-    public Orientation lastAngles = new Orientation();
 
     //dogecv detect declaration
 
@@ -83,6 +86,11 @@ public abstract class AlmondLinear extends LinearOpMode
         teamMarker = hardwareMap.servo.get("tm");
         imu = hardwareMap.get(BNO055IMU.class, "imu");
 
+        leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
         if (isAuto)
         {
             leftBack.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -104,6 +112,10 @@ public abstract class AlmondLinear extends LinearOpMode
         leftBack.setPower(lb);
         rightFront.setPower(rf);
         rightBack.setPower(rb);
+    }
+
+    public void setPowerAll(double power){
+        setPower(power,power,power,power);
     }
     /*
     This method sets all the motors to have the same power based on direction that the robot moves.
@@ -135,72 +147,113 @@ public abstract class AlmondLinear extends LinearOpMode
     }
     //This method is incomplete and contains a custom move to position that takes similar input to
     //driveToPosition().
-    public void encoderDrive(int target, double power, Direction direction)
-    {
+    public void setModeRunUsingEncoders() {
         leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
 
-        int startPosition = leftFront.getCurrentPosition();
-        int targetPosition = leftFront.getCurrentPosition()+target;
+    public void gyroTurnSimple(float targetAngle, double power){
+        float target = -getCurrentAngle() + 180 + targetAngle;
+        while(opModeIsActive()&&-getCurrentAngle()-target>10){
+            setPower(power,power,-power,-power);
+        }
+    }
 
-        setPowerDirection(power,direction);
-        while(!(Math.abs(targetPosition-leftFront.getCurrentPosition())<50))
-        {
-            if(Math.abs(targetPosition-leftFront.getCurrentPosition())<1000)
-            {
-                power = Math.abs(targetPosition-leftFront.getCurrentPosition())/1000;
-                setPowerDirection(power,direction);
+    public void PIDdriveToPosition(double target, double kp, double ki, double kd){
+        double integralZone = 500;
+        double power = 0;
+        boolean isMoving = true;
+        double targetPosition = 0;
+        double error = 0;
+        double proportion = 0;
+        double integral = 0;
+        double derivative = 0;
+        double errorT = 0;
+        double lastError = 0;
+        while(opModeIsActive()&&isMoving) {
+            targetPosition = leftFront.getCurrentPosition() + target;
+            error = targetPosition - leftFront.getCurrentPosition();
+
+            if (error < integralZone && error != 0) {
+                errorT += error;
+            } else {
+                errorT = 0;
+            }
+            if (errorT > 50 / ki) {
+                errorT = 50 / ki;
+            }
+            if (error == 0) {
+                integral = 0;
             }
 
+
+            proportion = error * kp;
+            integral = errorT * ki;
+            derivative = (error - lastError)*kd;
+
+            power = proportion + integral + derivative;
+            if(power>1){
+                power = 1;
+            }
+            setPowerAll(power);
+            if(power ==0){
+                isMoving = false;
+            }
+
+            sleep(20);
+
+
         }
-        setPower(0,0,0,0);
     }
+
+    public void encoderDrive(int lf){
+        setModeRunUsingEncoders();
+
+        leftFront.setPower(1);
+        while(opModeIsActive() && leftFront.getCurrentPosition()<1){
+
+            sleep(20);
+        }
+        leftFront.setPower(0);
+    }
+
     /*
     This  method is used for moving using encoder values. It takes 4 encoder values for the 4
     drivetrain motors and moves to target position. It also takes a power value of
      */
-    final public void driveToPosition(int lf, int lb, int rf,int rb, double power)
-    {
-        int targetPosition = lf + leftFront.getCurrentPosition();
+    final public void driveToPosition(int lf, int lb, int rf,int rb, double power) {
+
         leftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         leftBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        leftFront.setTargetPosition(leftFront.getCurrentPosition()+lf);
-        leftBack.setTargetPosition(lb+leftBack.getCurrentPosition());
-        rightFront.setTargetPosition(rf+rightFront.getCurrentPosition());
-        rightBack.setTargetPosition(rb+rightBack.getCurrentPosition());
+        leftFront.setTargetPosition(leftFront.getCurrentPosition() + lf);
+        leftBack.setTargetPosition(lb + leftBack.getCurrentPosition());
+        rightFront.setTargetPosition(rf + rightFront.getCurrentPosition());
+        rightBack.setTargetPosition(rb + rightBack.getCurrentPosition());
 
-        leftFront.setPower(power);
-        leftBack.setPower(power);
-        rightBack.setPower(power);
-        rightFront.setPower(power);
+        sleep(1000);
 
-        while( opModeIsActive() &&
+        while (opModeIsActive() &&
                 leftBack.isBusy() && leftFront.isBusy()
                 && rightFront.isBusy() && rightBack.isBusy())
         {
-            /*
-            if (Math.abs(leftFront.getCurrentPosition()-targetPosition)<1000){
-                power = Math.abs(leftFront.getCurrentPosition()-targetPosition)/1000;
-                if (power<0.05){
-                    power = 0.05;
-                }
 
+
+            power = (leftFront.getCurrentPosition()-leftFront.getTargetPosition())/1000;
+            if(power>1){
+                power = 1;
             }
-            leftFront.setPower(power);
-            leftBack.setPower(power);
-            rightBack.setPower(power);
-            rightFront.setPower(power);
-            */
+            setPowerAll(power);
+
         }
-        power = 0;
-
-
-
+    }
+    public void driveForwardDistance(double inches){
+        int targetPosition = (int)(inches*TICKS_PER_INCH);
+        driveToPosition(targetPosition,targetPosition,targetPosition,targetPosition,1);
     }
     public final void detectorEnable()
     {
@@ -223,7 +276,8 @@ public abstract class AlmondLinear extends LinearOpMode
 
         detector.enable(); // Start the detector!
     }
-
+    
+    //Method initializes the imu sensor.
     public void initImu()
     {
 
@@ -247,50 +301,12 @@ public abstract class AlmondLinear extends LinearOpMode
         telemetry.update();
     }
 
-    public void turnToAngleRelative(float targetAngle,double power)
-    {
-        float target = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle + 180 + targetAngle;
-        turnToAngleAbsolute(target,power);
-    }
-    public void turnToAngleAbsolute(float targetAngle,double power)
-    {
-        if (opModeIsActive())
-        {
-            float currentAngle = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle + 180;
-            while(opModeIsActive() && currentAngle != targetAngle)
-            {
-                currentAngle = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle + 180;
-                if(currentAngle > targetAngle - 0.5 || currentAngle < targetAngle +0.5)
-                {
-                    leftFront.setPower(0);
-                    leftBack.setPower(0);
-                    rightFront.setPower(0);
-                    rightBack.setPower(0);
-                    telemetry.addData("Status","Break");
-                    telemetry.update();
-                    break;
-                }
-                if(Math.abs(currentAngle-targetAngle)<5)
-                {
-                    power *= 0.3;
 
-                }
-                if (((targetAngle - currentAngle) % 360) > ((currentAngle - targetAngle)%360))
-                {
-                    leftFront.setPower(power);
-                    leftBack.setPower(power);
-                    rightFront.setPower(-power);
-                    rightBack.setPower(-power);
-                }
-                if ((targetAngle - currentAngle) % 360 < ((currentAngle - targetAngle) % 360))
-                {
-                    leftFront.setPower(-power);
-                    leftBack.setPower(-power);
-                    rightFront.setPower(power);
-                    rightBack.setPower(power);
-                }
-            }
-        }
+
+    //This method is currently unused. Work in progress turn based on gyro angle.
+    public float getCurrentAngle()
+    {
+        return imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle + 180;
     }
 
     public final void setModeAuto() { this.isAuto = true; }

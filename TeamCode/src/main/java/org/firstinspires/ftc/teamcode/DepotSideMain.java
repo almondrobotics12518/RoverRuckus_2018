@@ -4,6 +4,7 @@ import com.disnodeteam.dogecv.CameraViewDisplay;
 import com.disnodeteam.dogecv.DogeCV;
 import com.disnodeteam.dogecv.detectors.roverrukus.GoldAlignDetector;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.AlmondLinear;
 import org.firstinspires.ftc.teamcode.DataLogThread2;
@@ -20,7 +21,10 @@ public class DepotSideMain extends AlmondLinear
 
         hardwareMap();
         log = new DataLogThread2("DepotSideAuto",250,leftFront,leftBack,rightFront,rightBack,lScrew);
-
+        leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         teamMarker.setPosition(0.6);
         waitForStart();
         while (opModeIsActive() && isRunning)
@@ -31,14 +35,16 @@ public class DepotSideMain extends AlmondLinear
 
             log.start();
 
+
+
             lScrew.setPower(-1);
             sleep(5500);
             lScrew.setPower(0);
 
 
-            driveToPosition(500,500,500,500,1);
-            driveToPosition(1000,-1000,-1000,1000, 1);
-            driveToPosition(-1000,-1000,-1000,-1000,1);
+            driveToPosition(-500,-500,-500,-500,1);
+            driveToPosition(1000,-1000,-1000,-1000, 1);
+            driveToPosition(1000,1000,1000,1000,1);
 
             if(detector.isFound()&&detector.getWidth()>40&&detector.getXPosition()<500&&detector.getXPosition()>100)
             {

@@ -51,9 +51,9 @@ public class AutoCraterSide extends AlmondLinear
             sleep(5500); // Lowers for five seconds
             lScrew.setPower(0); // lScrew stops
 
-            driveToPosition(700,700,700,700,1); // Moves forward
+            driveToPosition(-700,-700,-700,-700,1); // Moves forward
             driveToPosition(500,-500,-500,500, 1); // Moves towards cube ( right )
-            driveToPosition(-900,-900,-900,-900,1); // Moves backward
+            driveToPosition(900,900,900,900,1); // Moves backward
 
             if(detector.isFound()&&detector.getWidth()>40)
             {

@@ -7,7 +7,19 @@ public class SideWaysTest extends AlmondLinear {
 
     public void runOpMode() throws InterruptedException
     {
+        int leftFrontEncoder;
         hardwareMap();
-        encoderDrive(5000,1,Direction.LEFT);
+        setModeRunUsingEncoders();
+        leftFront.setPower(1);
+        while(leftFront.getCurrentPosition()<2000){
+            sleep(20);
+        }
+        leftFrontEncoder = leftFront.getCurrentPosition()+2000;
+        leftFront.setPower(0);
+        leftFront.setPower(1);
+        while(leftFront.getCurrentPosition()<leftFrontEncoder){
+            sleep(20);
+        }
+        leftFront.setPower(0);
     }
 }
