@@ -236,10 +236,15 @@ public abstract class AlmondLinear extends LinearOpMode
                 Math.abs(rightBack.getCurrentPosition()-startPosRb)<500 &&
                 Math.abs(leftFront.getCurrentPosition()-startPosRb)<500)
         {
-            startPowerLf = ((lf/Math.abs(lf)) * (leftFront.getCurrentPosition()-startPosLf)/1000) + (0.4);
-            startPowerLb = ((lb/Math.abs(lb)) * (leftBack.getCurrentPosition()-startPosLb)/1000) + (0.4);
-            startPowerRf = ((rf/Math.abs(rf)) * (rightFront.getCurrentPosition()-startPosRf)/1000) + (0.4);
-            startPowerRb = ((rb/Math.abs(rb)) * (rightBack.getCurrentPosition()-startPosRb)/1000) + (0.4);
+            startPowerLf = ((leftFront.getCurrentPosition()-startPosLf)/1000) + (0.4);
+            startPowerLb = ((leftBack.getCurrentPosition()-startPosLb)/1000) + (0.4);
+            startPowerRf = ((rightFront.getCurrentPosition()-startPosRf)/1000) + (0.4);
+            startPowerRb = ((rightBack.getCurrentPosition()-startPosRb)/1000) + (0.4);
+
+            if(lf<0){startPowerLf*=-1;}
+            if(lb<0){startPowerLb*=-1;}
+            if(rf<0){startPowerRf*=-1;}
+            if(rb<0){startPowerRb*=-1;}
 
             telemetry.addData("difference",leftFront.getCurrentPosition()-startPosLf);
             telemetry.addData("power",leftFront.getPower());
