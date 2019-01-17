@@ -217,18 +217,41 @@ public abstract class AlmondLinear extends LinearOpMode
         double powerRb;
 
         int startPosLf = leftFront.getCurrentPosition();
-        double startPower = 0;
+        int startPosLb = leftBack.getCurrentPosition();
+        int startPosRf = rightFront.getCurrentPosition();
+        int startPosRb = rightBack.getCurrentPosition();
+
+        double startPowerLf = 0;
+        double startPowerLb;
+        double startPowerRf;
+        double startPowerRb;
 
         int targetLf = leftFront.getCurrentPosition()+lf;
         int targetLb = leftBack.getCurrentPosition()+lb;
         int targetRf = rightFront.getCurrentPosition()+rf;
         int targetRb = rightBack.getCurrentPosition()+rb;
+        while(opModeIsActive() && Math.abs(leftFront.getCurrentPosition()-startPosLf)<500 &&
+                Math.abs(leftBack.getCurrentPosition()-startPosLb)<500 &&
+                Math.abs(rightFront.getCurrentPosition()-startPosRf)<500 &&
+                Math.abs(rightBack.getCurrentPosition()-startPosRb)<500 &&
+                Math.abs(leftFront.getCurrentPosition()-startPosRb)<500)
+        {
+            startPowerLf = ((lf/Math.abs(lf)) * (leftFront.getCurrentPosition()-startPosLf)/1000) + (0.4);
+            startPowerLb = ((lb/Math.abs(lb)) * (leftBack.getCurrentPosition()-startPosLb)/1000) + (0.4);
+            startPowerRf = ((rf/Math.abs(rf)) * (rightFront.getCurrentPosition()-startPosRf)/1000) + (0.4);
+            startPowerRb = ((rb/Math.abs(rb)) * (rightBack.getCurrentPosition()-startPosRb)/1000) + (0.4);
 
+            telemetry.addData("difference",leftFront.getCurrentPosition()-startPosLf);
+            telemetry.addData("power",leftFront.getPower());
+            telemetry.update();
+            setPower(startPowerLf,startPowerLb,startPowerRf,startPowerRb);
+
+        }
         while(opModeIsActive() &&
-                Math.abs(leftFront.getCurrentPosition()-targetLf)>10||
-                Math.abs(rightFront.getCurrentPosition()-targetRf)>10 ||
-                Math.abs(leftBack.getCurrentPosition()-targetLb)>10 ||
-                Math.abs(rightBack.getCurrentPosition()-targetRb)>10)
+                Math.abs(leftFront.getCurrentPosition()-targetLf)>15||
+                Math.abs(rightFront.getCurrentPosition()-targetRf)>15 ||
+                Math.abs(leftBack.getCurrentPosition()-targetLb)>15 ||
+                Math.abs(rightBack.getCurrentPosition()-targetRb)>15)
         {
             errorLf = targetLf-leftFront.getCurrentPosition();
             errorLb = targetLb-leftBack.getCurrentPosition();

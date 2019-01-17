@@ -17,7 +17,8 @@ public class TeleOpMain extends LinearOpMode {
     private DcMotor leftBack;
     private DcMotor rightBack;
     private DcMotor slide;
-    private DcMotor arm;
+    private DcMotor armLeft;
+    private DcMotor armRight;
     private CRServo intake;
     private float leftX;
     private float leftY;
@@ -34,7 +35,8 @@ public class TeleOpMain extends LinearOpMode {
         leftBack = hardwareMap.dcMotor.get("LeftBack");
         rightFront = hardwareMap.dcMotor.get("RightFront");
         rightBack = hardwareMap.dcMotor.get("RightBack");
-        arm = hardwareMap.dcMotor.get("Arm");
+        armLeft = hardwareMap.dcMotor.get("ArmLeft");
+        armRight = hardwareMap.dcMotor.get("ArmRight");
         intake = hardwareMap.crservo.get("intake");
         slide = hardwareMap.dcMotor.get("Slide");
         lScrew = hardwareMap.dcMotor.get("LScrew");
@@ -44,7 +46,8 @@ public class TeleOpMain extends LinearOpMode {
         rightBack.setDirection(DcMotorSimple.Direction.REVERSE);
         rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
         //rightFront.setDirection(DcMotorSimple.Direction.FORWARD);
-        arm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        armLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        armRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
 
         /*leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -75,7 +78,8 @@ public class TeleOpMain extends LinearOpMode {
 
             lScrew.setPower(gamepad1.right_trigger-gamepad1.left_trigger); // Gives power to the lScrew
 
-            arm.setPower(-gamepad2.right_stick_y * 0.8); // Gives power to the arm
+            armLeft.setPower(-gamepad2.right_stick_y); // Gives power to the arm
+            armRight.setPower(gamepad1.right_stick_y);
 
             intake.setPower(gamepad2.right_trigger-gamepad2.left_trigger); //Spins the Intake
 
@@ -92,7 +96,8 @@ public class TeleOpMain extends LinearOpMode {
             telemetry.addData("RightFront",rightFront.getCurrentPosition());
             telemetry.addData("RightBack",rightBack.getCurrentPosition());
             telemetry.addData("Hang",lScrew.getCurrentPosition());
-            telemetry.addData("Arm zeroPowerBehavior",arm.getZeroPowerBehavior());
+            telemetry.addData("ArmLeft zeroPowerBehavior",armLeft.getZeroPowerBehavior());
+            telemetry.addData("ArmRight zeroPowerBehavior", armRight.getZeroPowerBehavior());
             telemetry.addData("Slide",slide.getCurrentPosition());
             telemetry.update();
 
@@ -108,7 +113,8 @@ public class TeleOpMain extends LinearOpMode {
         rightFront.setPower(0);
         rightBack.setPower(0);
         slide.setPower(0);
-        arm.setPower(0);
+        armLeft.setPower(0);
+        armRight.setPower(0);
         lScrew.setPower(0);
 
 
