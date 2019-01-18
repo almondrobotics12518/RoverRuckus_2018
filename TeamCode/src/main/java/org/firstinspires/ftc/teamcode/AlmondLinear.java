@@ -19,7 +19,7 @@ import static org.firstinspires.ftc.teamcode.AlmondLinear.Direction.FORWARD;
 
 public abstract class AlmondLinear extends LinearOpMode
 {
-
+    public float imuOffset;
 
     public int lfEnc = 0;
     public int lbEnc = 0;
@@ -166,18 +166,12 @@ public abstract class AlmondLinear extends LinearOpMode
         rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
-
-    public void gyroTurnSimple(float targetAngle, double power){
-        float target = -getCurrentAngle() + 180 + targetAngle;
-        while(opModeIsActive()&&-getCurrentAngle()-target>10){
-            setPower(power,power,-power,-power);
-        }
-    }
+    
 
     public void encoderDrive(int lf,int lb, int rf, int rb, double maxPower){
         setModeRunUsingEncoders();
-        double kp = 0.003;
-        double ki = 0.000005;
+        double kp = 0.004;
+        double ki = 0.00000;
         double kd = 0.0015;
         int integralZone = 200;
 
@@ -226,37 +220,18 @@ public abstract class AlmondLinear extends LinearOpMode
         double startPowerRf;
         double startPowerRb;
 
+        double rampUpkp=0.005;
+        double maxPowerMultiplier;
+
         int targetLf = leftFront.getCurrentPosition()+lf;
         int targetLb = leftBack.getCurrentPosition()+lb;
         int targetRf = rightFront.getCurrentPosition()+rf;
         int targetRb = rightBack.getCurrentPosition()+rb;
-        while(opModeIsActive() && Math.abs(leftFront.getCurrentPosition()-startPosLf)<500 &&
-                Math.abs(leftBack.getCurrentPosition()-startPosLb)<500 &&
-                Math.abs(rightFront.getCurrentPosition()-startPosRf)<500 &&
-                Math.abs(rightBack.getCurrentPosition()-startPosRb)<500 &&
-                Math.abs(leftFront.getCurrentPosition()-startPosRb)<500)
-        {
-            startPowerLf = ((leftFront.getCurrentPosition()-startPosLf)/1000) + (0.4);
-            startPowerLb = ((leftBack.getCurrentPosition()-startPosLb)/1000) + (0.4);
-            startPowerRf = ((rightFront.getCurrentPosition()-startPosRf)/1000) + (0.4);
-            startPowerRb = ((rightBack.getCurrentPosition()-startPosRb)/1000) + (0.4);
-
-            if(lf<0){startPowerLf*=-1;}
-            if(lb<0){startPowerLb*=-1;}
-            if(rf<0){startPowerRf*=-1;}
-            if(rb<0){startPowerRb*=-1;}
-
-            telemetry.addData("difference",leftFront.getCurrentPosition()-startPosLf);
-            telemetry.addData("power",leftFront.getPower());
-            telemetry.update();
-            setPower(startPowerLf,startPowerLb,startPowerRf,startPowerRb);
-
-        }
         while(opModeIsActive() &&
-                Math.abs(leftFront.getCurrentPosition()-targetLf)>15||
-                Math.abs(rightFront.getCurrentPosition()-targetRf)>15 ||
-                Math.abs(leftBack.getCurrentPosition()-targetLb)>15 ||
-                Math.abs(rightBack.getCurrentPosition()-targetRb)>15)
+                Math.abs(leftFront.getCurrentPosition()-targetLf)>20||
+                Math.abs(rightFront.getCurrentPosition()-targetRf)>20 ||
+                Math.abs(leftBack.getCurrentPosition()-targetLb)>20 ||
+                Math.abs(rightBack.getCurrentPosition()-targetRb)>20)
         {
             errorLf = targetLf-leftFront.getCurrentPosition();
             errorLb = targetLb-leftBack.getCurrentPosition();
@@ -274,6 +249,10 @@ public abstract class AlmondLinear extends LinearOpMode
                 errorTRf = 0;
                 errorTRb = 0;
             }
+
+            maxPowerMultiplier = Math.abs(errorLf - lf) * rampUpkp;
+            if (maxPowerMultiplier>1){maxPowerMultiplier=1;}
+            if (maxPowerMultiplier<0.2){maxPowerMultiplier=0.2;}
 
             proportionLf = errorLf * kp;
             proportionLb = errorLb * kp;
@@ -306,16 +285,16 @@ public abstract class AlmondLinear extends LinearOpMode
             powerRf = proportionRf + derivativeRf + integralRf;
             powerRb = proportionRb + integralRb + derivativeRb;
 
-            if(Math.abs(powerLf)>1){powerLf/=Math.abs(powerLf);}
+            if(Math.abs(powerLf)>1){powerLf/=Math.abs(powerLf); powerLf *= maxPowerMultiplier;}
             if(Math.abs(powerLf)<0.05){if(powerLf<0){powerLf-=0.05;}else{powerLf+=0.05;}}
 
-            if(Math.abs(powerLb)>1){powerLb/=Math.abs(powerLb);}
+            if(Math.abs(powerLb)>1){powerLb/=Math.abs(powerLb); powerLb *= maxPowerMultiplier;}
             if(Math.abs(powerLb)<0.05){if(powerLb<0){powerLb-=0.05;}else{powerLb+=0.05;}}
 
-            if(Math.abs(powerRf)>1){powerRf/=Math.abs(powerRf);}
+            if(Math.abs(powerRf)>1){powerRf/=Math.abs(powerRf); powerRf *= maxPowerMultiplier;}
             if(Math.abs(powerRf)<0.05){if(powerRf<0){powerRf-=0.05;}else{powerRf+=0.05;}}
 
-            if(Math.abs(powerRb)>1){powerRb/=Math.abs(powerRb);}
+            if(Math.abs(powerRb)>1){powerRb/=Math.abs(powerRb); powerRb *= maxPowerMultiplier;}
             if(Math.abs(powerRb)<0.05){if(powerRb<0){powerRb-=0.05;}else{powerRb+=0.05;}}
 
             setPower(powerLf,powerLb,powerRf,powerRb);
@@ -325,9 +304,12 @@ public abstract class AlmondLinear extends LinearOpMode
             telemetry.addData("Target",targetLf);
             telemetry.addData("Power",leftFront.getPower());
             telemetry.addData("error",errorLf);
+            telemetry.addData("Scaling Multiplier",maxPowerMultiplier);
+            telemetry.addData("Ramp up error",errorLf-lf);
             telemetry.update();
         }
         setPowerAll(0);
+        sleep(25);
 
     }
 
@@ -426,10 +408,6 @@ public abstract class AlmondLinear extends LinearOpMode
 
 
     //This method is currently unused. Work in progress turn based on gyro angle.
-    public float getCurrentAngle()
-    {
-        return imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle + 180;
-    }
 
     public final void setModeAuto() { this.isAuto = true; }
 

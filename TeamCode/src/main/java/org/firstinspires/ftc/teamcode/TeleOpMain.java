@@ -78,8 +78,8 @@ public class TeleOpMain extends LinearOpMode {
 
             lScrew.setPower(gamepad1.right_trigger-gamepad1.left_trigger); // Gives power to the lScrew
 
-            armLeft.setPower(-gamepad2.right_stick_y); // Gives power to the arm
-            armRight.setPower(gamepad1.right_stick_y);
+            armLeft.setPower(-gamepad2.right_stick_y*0.5); // Gives power to the arm
+            armRight.setPower(gamepad2.right_stick_y*0.5);
 
             intake.setPower(gamepad2.right_trigger-gamepad2.left_trigger); //Spins the Intake
 
@@ -98,6 +98,8 @@ public class TeleOpMain extends LinearOpMode {
             telemetry.addData("Hang",lScrew.getCurrentPosition());
             telemetry.addData("ArmLeft zeroPowerBehavior",armLeft.getZeroPowerBehavior());
             telemetry.addData("ArmRight zeroPowerBehavior", armRight.getZeroPowerBehavior());
+            telemetry.addData("ArmRight Power",armRight.getPower());
+            telemetry.addData("ArmLeft Power",armLeft.getPower());
             telemetry.addData("Slide",slide.getCurrentPosition());
             telemetry.update();
 

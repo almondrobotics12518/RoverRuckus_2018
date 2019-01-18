@@ -11,7 +11,11 @@ public class SideWaysTest extends AlmondLinear {
         hardwareMap();
         setModeRunUsingEncoders();
         waitForStart();
-        encoderDrive(1000,1000,1000,1000,1);
-        requestOpModeStop();
+        while(opModeIsActive()&&isRunning){
+            encoderDrive(10000,-10000,-10000,10000,1);
+            encoderDrive(-10000,10000,10000,-10000,1);
+            isRunning=false;
+        }
+        setPowerAll(0);
     }
 }
