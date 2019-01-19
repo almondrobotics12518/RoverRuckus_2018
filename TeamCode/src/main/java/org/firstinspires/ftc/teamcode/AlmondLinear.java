@@ -88,6 +88,7 @@ public abstract class AlmondLinear extends LinearOpMode
         intake = hardwareMap.crservo.get("intake");
         lScrew = hardwareMap.dcMotor.get("LScrew");
         teamMarker = hardwareMap.servo.get("tm");
+        slide = hardwareMap.dcMotor.get("Slide");
         imu = hardwareMap.get(BNO055IMU.class, "imu");
 
         leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -166,7 +167,7 @@ public abstract class AlmondLinear extends LinearOpMode
         rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
-    
+
 
     public void encoderDrive(int lf,int lb, int rf, int rb, double maxPower){
         setModeRunUsingEncoders();
@@ -329,17 +330,13 @@ public abstract class AlmondLinear extends LinearOpMode
         rightFront.setTargetPosition(rf + rightFront.getCurrentPosition());
         rightBack.setTargetPosition(rb + rightBack.getCurrentPosition());
 
+        setPowerAll(power);
+
         while (opModeIsActive() &&
                 leftBack.isBusy() && leftFront.isBusy()
                 && rightFront.isBusy() && rightBack.isBusy())
         {
 
-
-            power = (leftFront.getCurrentPosition()-leftFront.getTargetPosition())/1000;
-            if(power>1){
-                power = 1;
-            }
-            setPowerAll(power);
 
         }
     }

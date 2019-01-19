@@ -20,31 +20,36 @@ public class DepotSideMain extends AlmondLinear
     {
 
         hardwareMap();
-        log = new DataLogThread2("DepotSideAuto",250,leftFront,leftBack,rightFront,rightBack,lScrew);
         leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         teamMarker.setPosition(0.6);
+        slide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         waitForStart();
         while (opModeIsActive() && isRunning)
         {
             telemetry.addData("Status","In Start");
             telemetry.update();
-            detectorEnable();
-
-            log.start();
 
 
 
-            lScrew.setPower(-1);
-            sleep(5500);
+            telemetry.addData("Status","Starting lead screw");
+            telemetry.update();
+            lScrew.setPower(1);
+            Thread.sleep(5200);
+            telemetry.addData("Status","Out of sleep");
+            telemetry.update();
             lScrew.setPower(0);
 
+            telemetry.addData("Status","Starting to drive");
+            telemetry.update();
+
+            detectorEnable();
 
             driveToPosition(-500,-500,-500,-500,1);
-            driveToPosition(1000,-1000,-1000,-1000, 1);
-            driveToPosition(1000,1000,1000,1000,1);
+            driveToPosition(1000,-1000,-1000,1000, 1);
+            driveToPosition(500,500,500,500,1);
 
             if(detector.isFound()&&detector.getWidth()>40&&detector.getXPosition()<500&&detector.getXPosition()>100)
             {
@@ -57,12 +62,14 @@ public class DepotSideMain extends AlmondLinear
                 driveToPosition(1000,1000,1000,1000,1);
                 teamMarker.setPosition(0);
                 sleep(500);
-                driveToPosition(2000,2000,2000,2000,1);
-                driveToPosition(-1350,-1350,1350,1350,1);
+                driveToPosition(1300,1300,1300,1300,1);
+                driveToPosition(-1250,-1250,1250,1250,1);
+                driveToPosition(500,-500,-500,500,1);
                 driveToPosition(5000,5000,5000,5000,1);
+                slide.setPower(-1);
+                sleep(800);
+                slide.setPower(0);
 
-                log.setIsRunning(false);
-                log.closeLogFile();
 
             } else {
                 driveToPosition(-1300,-1300,1300,1300,0.5);
@@ -79,12 +86,14 @@ public class DepotSideMain extends AlmondLinear
                     driveToPosition(6000,6000,6000,6000,1);
                     driveToPosition(1300,-1300,-1300,1300,1);
                     driveToPosition(3000,3000,3000,3000,1);
+                    slide.setPower(-1);
+                    sleep(800);
+                    slide.setPower(0);
 
-                    log.setIsRunning(false);
-                    log.closeLogFile();
 
                 } else {
                     detector.disable();
+
                     driveToPosition(-200,-200,200,200,0.2);
                     driveToPosition(1000,-1000,-1000,1000,1);
                     driveToPosition(-2400,-2400,-2400,-2400,1);
@@ -97,9 +106,9 @@ public class DepotSideMain extends AlmondLinear
                     driveToPosition(2000,2000,2000,2000,1);
                     driveToPosition(1500,-1500,-1500,1500,1);
                     driveToPosition(8000,8000,8000,8000,1);
-
-                    log.setIsRunning(false);
-                    log.closeLogFile();
+                    slide.setPower(-1);
+                    sleep(800);
+                    slide.setPower(0);
 
                 }
 

@@ -27,9 +27,10 @@ public class TeleOpMain extends LinearOpMode {
     private double RF;
     private double LB;
     private double RB;
+    private double armY;
 
     @Override
-    public void runOpMode() {
+    public void runOpMode() throws InterruptedException{
         // Setting dcMotor variables to motors
         leftFront = hardwareMap.dcMotor.get("LeftFront");
         leftBack = hardwareMap.dcMotor.get("LeftBack");
@@ -48,6 +49,7 @@ public class TeleOpMain extends LinearOpMode {
         //rightFront.setDirection(DcMotorSimple.Direction.FORWARD);
         armLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         armRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        slide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
 
         /*leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -58,8 +60,7 @@ public class TeleOpMain extends LinearOpMode {
 
         // dont need isrunning
         waitForStart();
-        boolean isRunning = true;
-        while(isRunning && opModeIsActive()){
+        while(opModeIsActive()){
             leftX = -gamepad1.left_stick_x; // Reverse left joystick's X coordinate
             leftY = gamepad1.left_stick_y; // Reverse left joystick's Y coordinate
             rightX = -gamepad1.right_stick_x;
@@ -78,8 +79,18 @@ public class TeleOpMain extends LinearOpMode {
 
             lScrew.setPower(gamepad1.right_trigger-gamepad1.left_trigger); // Gives power to the lScrew
 
-            armLeft.setPower(-gamepad2.right_stick_y*0.5); // Gives power to the arm
-            armRight.setPower(gamepad2.right_stick_y*0.5);
+            armY = gamepad2.right_stick_y*0.25;
+            if (Math.abs(armY)==0){
+                armLeft.setPower(0);
+                armRight.setPower(0);
+            } else {
+                armY=(0.2*armY/Math.abs(armY))+armY;
+                armLeft.setPower(-armY); // Gives power to the arm
+                armRight.setPower(armY);
+            }
+
+
+
 
             intake.setPower(gamepad2.right_trigger-gamepad2.left_trigger); //Spins the Intake
 
@@ -101,13 +112,11 @@ public class TeleOpMain extends LinearOpMode {
             telemetry.addData("ArmRight Power",armRight.getPower());
             telemetry.addData("ArmLeft Power",armLeft.getPower());
             telemetry.addData("Slide",slide.getCurrentPosition());
+            telemetry.addData("Arm y",armY);
+            telemetry.addData("Gamepad 2 left stick Y",gamepad2.left_stick_y);
             telemetry.update();
 
             // dont need this
-            idle();
-            if (isStopRequested()) {
-                isRunning = false;
-            }
 
         }
         leftFront.setPower(0);

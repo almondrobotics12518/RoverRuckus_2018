@@ -11,8 +11,8 @@ public class LeadScrewReset extends AlmondLinear {
         hardwareMap();
         waitForStart();
         lScrew.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        lScrew.setPower(1);
-        sleep(10000);
+        lScrew.setPower(-1);
+        sleep(5500);
 
     }
 }

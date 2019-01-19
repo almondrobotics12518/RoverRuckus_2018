@@ -8,9 +8,9 @@ public class LeadScrewTest extends AlmondLinear {
     public void runOpMode() throws InterruptedException{
         while(isRunning&&opModeIsActive()){
             hardwareMap();
-            lScrew.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            lScrew.setPower(-1);
-            sleep(5000);
+            lScrew.setPower(1);
+            sleep(5500);
+            lScrew.setPower(0);
         }
 
     }
