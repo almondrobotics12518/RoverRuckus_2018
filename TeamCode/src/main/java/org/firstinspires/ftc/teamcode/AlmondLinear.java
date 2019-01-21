@@ -339,6 +339,7 @@ public abstract class AlmondLinear extends LinearOpMode
 
 
         }
+        setPowerAll(0);
     }
 
 

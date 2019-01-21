@@ -10,7 +10,6 @@ public class LeadScrewReset extends AlmondLinear {
     public void runOpMode() throws InterruptedException {
         hardwareMap();
         waitForStart();
-        lScrew.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         lScrew.setPower(-1);
         sleep(5500);
 

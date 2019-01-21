@@ -24,7 +24,7 @@ public class DepotSideMain extends AlmondLinear
         rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        teamMarker.setPosition(0.6);
+        teamMarker.setPosition(0.8);
         slide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         waitForStart();
         while (opModeIsActive() && isRunning)
@@ -37,7 +37,7 @@ public class DepotSideMain extends AlmondLinear
             telemetry.addData("Status","Starting lead screw");
             telemetry.update();
             lScrew.setPower(1);
-            Thread.sleep(5200);
+            Thread.sleep(10000);
             telemetry.addData("Status","Out of sleep");
             telemetry.update();
             lScrew.setPower(0);
@@ -46,11 +46,11 @@ public class DepotSideMain extends AlmondLinear
             telemetry.update();
 
             detectorEnable();
-
-            driveToPosition(-500,-500,-500,-500,1);
+            driveToPosition(-100,100,100,-100,1);
+            driveToPosition(100,-100,-100,-100,1);
+            driveToPosition(-200,-200,-200,-200,1);
             driveToPosition(1000,-1000,-1000,1000, 1);
-            driveToPosition(500,500,500,500,1);
-
+            driveToPosition(200,200,200,200,1);
             if(detector.isFound()&&detector.getWidth()>40&&detector.getXPosition()<500&&detector.getXPosition()>100)
             {
                 detector.disable();
@@ -60,7 +60,7 @@ public class DepotSideMain extends AlmondLinear
                 driveToPosition(9000,-9000,-9000,9000,1);
                 driveToPosition(-1000,1000,1000,-1000,1);
                 driveToPosition(1000,1000,1000,1000,1);
-                teamMarker.setPosition(0);
+                teamMarker.setPosition(0.4);
                 sleep(500);
                 driveToPosition(1300,1300,1300,1300,1);
                 driveToPosition(-1250,-1250,1250,1250,1);
@@ -81,7 +81,7 @@ public class DepotSideMain extends AlmondLinear
                     driveToPosition(7500,-7500,-7500,7500,1);
                     driveToPosition(-1000,1000,1000,-1000,1);
                     driveToPosition(-3000,-3000,-3000,-3000,1);
-                    teamMarker.setPosition(0);
+                    teamMarker.setPosition(0.4);
                     sleep(400);
                     driveToPosition(6000,6000,6000,6000,1);
                     driveToPosition(1300,-1300,-1300,1300,1);
@@ -101,7 +101,7 @@ public class DepotSideMain extends AlmondLinear
                     driveToPosition(-1000,1000,1000,-1000,1);
                     driveToPosition(-3000,-3000,-3000,-3000,1);
                     driveToPosition(7000,-7000,-7000,7000,1);
-                    teamMarker.setPosition(0);
+                    teamMarker.setPosition(0.4);
                     sleep(400);
                     driveToPosition(2000,2000,2000,2000,1);
                     driveToPosition(1500,-1500,-1500,1500,1);

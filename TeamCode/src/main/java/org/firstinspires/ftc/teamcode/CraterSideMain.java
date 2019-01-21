@@ -24,7 +24,7 @@ public class CraterSideMain extends AlmondLinear
         hardwareMap();
         slide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         log = new DataLogThread2("DepotSideAuto",250,leftFront,leftBack,rightFront,rightBack,lScrew);
-        teamMarker.setPosition(0.6);
+        teamMarker.setPosition(0.8);
         waitForStart();
         while (opModeIsActive() && isRunning)
         {
@@ -50,14 +50,14 @@ public class CraterSideMain extends AlmondLinear
              // Start the detector!
 
             lScrew.setPower(1); // Robot lowers
-            sleep(5200);
+            sleep(10000);
             lScrew.setPower(0);
 
             detector.enable();
 
-            driveToPosition(-500,-500,-500,-500,1); // Moves forward
+            driveToPosition(-300,-300,-300,-300,1); // Moves forward
             driveToPosition(500,-500,-500,500, 1); // Moves towards cube ( right )
-            driveToPosition(500,500,500,500,1); // Moves backward
+            driveToPosition(300,300,300,300,1); // Moves backward
 
             if(detector.isFound()&&detector.getWidth()>40)
             {
@@ -69,14 +69,14 @@ public class CraterSideMain extends AlmondLinear
                 driveToPosition(-2000,2000,2000,-2000,1);
                 driveToPosition(5000,5000,5000,5000,1);
                 driveToPosition(-1370,-1370,1370,1370,1);
-                driveToPosition(1000,-1000,-1000,1000,1);
-                driveToPosition(4000,4000,4000,4000,1);
+                driveToPosition(2000,-2000,-2000,2000,1);
+                driveToPosition(5000,5000,5000,5000,1);
                 driveToPosition(-2600,-2600,2600,2600,1);
-                teamMarker.setPosition(0);
+                teamMarker.setPosition(0.4);
                 sleep(400);
                 driveToPosition(-3200,-3000,3200,3200,1);
-                driveToPosition(6000,6000,6000,6000,1);
-                //slide.setPower(1);
+                driveToPosition(7000,7000,7000,7000,1);
+                slide.setPower(-1);
                 sleep(800);
                 slide.setPower(0);
 
@@ -84,39 +84,55 @@ public class CraterSideMain extends AlmondLinear
 
             } else {
                 driveToPosition(1000,1000,-1000,-1000,1); // Moves clockwise
+                sleep(500);
 
-                if(detector.isFound() &&detector.getWidth()>40)
+                if(detector.isFound() && detector.getWidth()>30)
                 {
                     detector.disable();
                     telemetry.addData("Status","Pushing Outtake Side Cube...");
                     telemetry.update();
-
-                    driveToPosition(4500,-4500,-4500,4500,1); // Moves towards cube ( right )
-                    driveToPosition(-3000,3000,3000,-3000,1);
-                    driveToPosition(-1000,-1000,1000,1000,1);
+                    driveToPosition(300,300,-300,-300,1);
+                    driveToPosition(4800,-4800,-4800,4800,1); // Moves towards cube ( right )
+                    driveToPosition(-2300,2300,2300,-2300,1);
+                    driveToPosition(-1200,-1200,1200,1200,1);
                     driveToPosition(6600,6600,6600,6600,1);
                     driveToPosition(4200,4200,-4200,-4200,1);
-                    driveToPosition(-7700,-7700,-7700,-7700,1);
-                    teamMarker.setPosition(0);
+                    sleep(100);
+                    driveToPosition(-4000,-4000,-4000,-4000,1);
+                    driveToPosition(-2000,2000,2000,-2000,1);
+                    teamMarker.setPosition(0.4);
                     sleep(500);
-                    driveToPosition(11000,11000,11000,11000,1);
+                    driveToPosition(7000,7000,7000,7000,1);
+                    slide.setPower(-1);
+                    sleep(800);
+                    slide.setPower(0);
 
 
                 } else {
+
                     detector.disable();
+
                     telemetry.addData("Status","Pushing Intake Side Cube...");
                     telemetry.update();
-                    driveToPosition(-2200,-2200,2200,2200,1); // Moves counterclockwise
+                    driveToPosition(-2000,-2000,2000,2000,1); // Moves counterclockwise
+                    driveToPosition(-500,-500,-500,-500,1);
                     driveToPosition(5500,-5500,-5500,5500,1); // Moves towards cube ( right// )
                     driveToPosition(-1900,1900,1900,-1900,1);
                     driveToPosition(500,500,-500,-500,1);
-                    driveToPosition(6000,6000,6000,6000,1);
+                    driveToPosition(4000,4000,4000,4000,1);
                     driveToPosition(-700,-700,700,700,1);
-                    driveToPosition(2000,2000,2000,2000,1);
+                    driveToPosition(2000,-2000,-2000,2000,1);
+                    driveToPosition(5000,5000,5000,5000,1);
                     driveToPosition(-2700,-2700,2700,2700,1);
-                    teamMarker.setPosition(0);
+                    teamMarker.setPosition(0.4);
+                    sleep(400);
                     driveToPosition(-3200,-3000,3200,3200,1);
-                    driveToPosition(10000,10000,10000,10000,1);
+                    driveToPosition(9000,9000,9000,9000,1);
+                    slide.setPower(-1);
+                    sleep(800);
+                    slide.setPower(0);
+
+
                 }
             }
 
